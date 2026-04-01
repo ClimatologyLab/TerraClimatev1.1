@@ -1,0 +1,9 @@
+#Big data files
+*.nc
+*.mat
+
+# Unused files
+*.old
+*.swp
+*/OLD
+*/OLD/*
