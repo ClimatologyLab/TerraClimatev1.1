@@ -5,5 +5,4 @@
 # Unused files
 *.old
 *.swp
-*/OLD
-*/OLD/*
+OLD/
