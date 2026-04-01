@@ -6,3 +6,6 @@
 *.old
 *.swp
 OLD/
+
+MAKE_CLIMO/
+MAKE_NETCDFS/
