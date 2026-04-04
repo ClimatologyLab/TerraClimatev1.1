@@ -1,3 +1,5 @@
+% historical TerraClimate data need to be acquired from
+% http://thredds.northwestknowledge.net:8080/thredds/catalog/TERRACLIMATE_ALL/data/catalog.html
 
 load global_smooth2.mat
 x=x';y=y';x=x-360;
