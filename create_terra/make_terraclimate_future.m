@@ -19,16 +19,20 @@ GMT=c(:,3);
 GMT=movmean(GMT,5);
 [x,y]=meshgrid(X,Y);
 
+% historical TerraClimate data and climatologies need to be acquired from
+% http://thredds.northwestknowledge.net:8080/thredds/catalog/TERRACLIMATE_ALL/climatology/catalog.html
+% http://thredds.northwestknowledge.net:8080/thredds/catalog/TERRACLIMATE_ALL/data/catalog.html
+
 d2=delta_temp-GMT(targetyear-1879);
 lat=ncread('TerraClimate_tmax_',num2str(targetyear),'.nc'],'lat');
 lon=ncread('TerraClimate_tmax_',num2str(targetyear),'.nc'],'lat');
 switch var,
-case 1, data=ncread('TerraClimate_tmax_',num2str(targetyear),'.nc'],'tmax');
-case 2, data=ncread('TerraClimate_tmin_',num2str(targetyear),'.nc'],'tmin');
-case 3, data=ncread('TerraClimate_ws_',num2str(targetyear),'.nc'],'ws');
-case 4, data=ncread('TerraClimate_srad_',num2str(targetyear),'.nc'],'srad');
-case 5, data=ncread('TerraClimate_ppt_',num2str(targetyear),'.nc'],'ppt');
-case 6, data=ncread('TerraClimate_vap_',num2str(targetyear),'.nc'],'vap');
+case 1, data=ncread('TerraClimate_tmax_',num2str(targetyear),'.nc'],'tmax');refdata=ncread('TerraClimate_19912020_tmax.nc','tmax');
+case 2, data=ncread('TerraClimate_tmin_',num2str(targetyear),'.nc'],'tmin');refdata=ncread('TerraClimate_19912020_tmin.nc','tmin');
+case 3, data=ncread('TerraClimate_ws_',num2str(targetyear),'.nc'],'ws');refdata=ncread('TerraClimate_19912020_ws.nc','ws');
+case 4, data=ncread('TerraClimate_srad_',num2str(targetyear),'.nc'],'srad');refdata=ncread('TerraClimate_19912020_srad.nc','srad');
+case 5, data=ncread('TerraClimate_ppt_',num2str(targetyear),'.nc'],'ppt');refdata=ncread('TerraClimate_19912020_ppt.nc','ppt');
+case 6, data=ncread('TerraClimate_vap_',num2str(targetyear),'.nc'],'vap');refdata=ncread('TerraClimate_19912020_vap.nc','vap');
 end
 
 
