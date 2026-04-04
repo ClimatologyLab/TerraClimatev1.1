@@ -1,42 +1,28 @@
 % historical TerraClimate data need to be acquired from
 % http://thredds.northwestknowledge.net:8080/thredds/catalog/TERRACLIMATE_ALL/data/catalog.html
+var=1;
+targetyear=2015;
 
-load global_smooth2.mat
-x=x';y=y';x=x-360;
-clear rmaxdata rmindata
-wdata=permute(wdata,[2 1 3 4]);
-rdata=permute(rdata,[2 1 3 4]);
-hdata=permute(hdata,[2 1 3 4]);
-tndata=permute(tndata,[2 1 3 4]);
-txdata=permute(txdata,[2 1 3 4]);
-prdata=permute(squeeze(nanmean(prdata,4)),[2 1 3 4]);
-
-wdata=wdata-repmat(nanmean(wdata(:,:,:,1:50),4),[1 1 1 251]);
-rdata=rdata-repmat(nanmean(rdata(:,:,:,1:50),4),[1 1 1 251]);
-hdata=hdata./repmat(nanmean(hdata(:,:,:,1:50),4),[1 1 1 251]);
-tndata=tndata-repmat(nanmean(tndata(:,:,:,1:50),4),[1 1 1 251]);
-txdata=txdata-repmat(nanmean(txdata(:,:,:,1:50),4),[1 1 1 251]);
-prdata=prdata./repmat(nanmean(prdata(:,:,:,1:50),4),[1 1 1 251]);
-
-% shift GCM data to span lon of terraclimate
-z=wdata(:,1:91,:,:);wdata=wdata(:,91:180,:,:);wdata(:,91:181,:,:)=z;wdata(:,91,:,:)=nanmean(wdata(:,90:92,:,:),2);
-z=rdata(:,1:91,:,:);rdata=rdata(:,91:180,:,:);rdata(:,91:181,:,:)=z;rdata(:,91,:,:)=nanmean(rdata(:,90:92,:,:),2);
-z=hdata(:,1:91,:,:);hdata=hdata(:,91:180,:,:);hdata(:,91:181,:,:)=z;hdata(:,91,:,:)=nanmean(hdata(:,90:92,:,:),2);
-z=txdata(:,1:91,:,:);txdata=txdata(:,91:180,:,:);txdata(:,91:181,:,:)=z;txdata(:,91,:,:)=nanmean(txdata(:,90:92,:,:),2);
-z=tndata(:,1:91,:,:);tndata=tndata(:,91:180,:,:);tndata(:,91:181,:,:)=z;tndata(:,91,:,:)=nanmean(tndata(:,90:92,:,:),2);
-z=prdata(:,1:91,:,:);prdata=prdata(:,91:180,:,:);prdata(:,91:181,:,:)=z;prdata(:,91,:,:)=nanmean(prdata(:,90:92,:,:),2);
-
-x=-180:2:180;y=y(:,1);
+x=ncread('counterfactual_tmax.nc','lon');
+y=ncread('counterfactual_tmax.nc','lat');
 [x,y]=meshgrid(x,y);
-d='/data/obs/obs/gridded/terraclim/MAT/';
-% loop through years 1950-2025
-% ppt
-%l={'ppt';'vap';'tmax';'tmin';'srad';'ws'};
-%pptdata;vapdata;tmaxdata;tmindata;sraddad;winddata
-load([d,'/lonlatel']);
-clear el
-%lon=lon(f,f2);
-%lat=lat(f,f2);
+
+switch var,
+case 1, delta=ncread('counterfactual_tmax.nc','counterfactual_tmax');
+case 2, delta=ncread('counterfactual_tmin.nc','counterfactual_tmin');
+case 3, delta=ncread('counterfactual_srad.nc','counterfactual_srad');
+case 4, delta=ncread('counterfactual_ws.nc','counterfactual_ws');
+case 5, delta=ncread('counterfactual_pr.nc','counterfactual_pr');
+case 6, delta=ncread('counterfactual_vap.nc','counterfactual_vap');
+end
+
+delta=reshape(delta,181,91,12,251);
+delta=permute(delta,[2 1 3 4]);
+
+if var<=4 % subtract from historical data
+
+
+
 for i=1:76
  for j=2:6
 switch j,
