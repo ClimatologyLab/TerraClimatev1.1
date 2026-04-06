@@ -2,11 +2,11 @@
 
 ## Repository Structure and Processing Workflow
 
-This repository contains the code and supporting resources used to generate the TerraClimate v1.1 dataset, including observational fields and future scenario products. The workflow is organized into three primary stages: (1) data generation, and (2) NetCDF export and dissemination.
+This repository contains the code and supporting resources used to generate the TerraClimate v1.1 dataset, including observational fields and future scenario (+2C,+4C, counterfactual) products. The workflow is organized into three primary stages: (1) download supporting files, (2) data generation, (3) NetCDF export. We have also added code support for downloading subsets of TerraClimate.
 
 ---
 
-## Overview of Workflow
+## Overview of Workflow and Support
 
 1. **Core data generation (`create_terra/`)**
    Scripts and data used to construct TerraClimate fields, including water balance modeling, potential evapotranspiration (PET), and Palmer Drought Severity Index (PDSI) calculations for both historical and future scenarios.
@@ -84,9 +84,25 @@ This repository contains the code and supporting resources used to generate the 
 ---
 ## Processing Details
 
-### 1. TerraClimate Field Generation
+### 1. Additional Data Files for Code Repository
 
-The `create_terra/` module contains the primary computational workflows used to generate TerraClimate fields. These include:
+The `1_DOWNLOAD_SUPPORT_DATA` folder contains a bash script `download_support_data.sh` for downloading additional data to support this code. This data can be downloaded into the proper folders using:
+
+```bash
+chmod +x download_support_data.sh
+./download_support_data.sh
+```
+
+The `download_support_data.sh` script downloads the following types of files:
+
+* **Coarse-resolution GCM NetCDFs:** e.g., `counterfactual_pr.nc`, `counterfactual_srad.nc`, …
+* **Scale factor NetCDFs** (to `create_terra/INPUTDATA`): e.g., `scalefactor_pr.nc`, `scalefactor_was.nc`, …
+* **MATLAB support files** (to `create_terra/INPUTDATA`): e.g., `annual_co2.mat`, `global_smooth2.mat`, …
+
+
+### 2. TerraClimate Field Generation
+
+The `2_RUN_TERRACLIMATE/` folder contains the primary computational workflows used to generate TerraClimate fields. These include:
 
 * Water balance modeling integrating precipitation, temperature, and soil parameters
 * Potential evapotranspiration (PET) calculations incorporating CO₂ effects

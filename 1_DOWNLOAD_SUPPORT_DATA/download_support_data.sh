@@ -6,7 +6,7 @@ BASE_URL="https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT"
 
 echo "Creating directory structure..."
 mkdir -p data/coarse_gcm
-mkdir -p create_terra/INPUTDATA
+mkdir -p 2_RUN_TERRACLIMATE/INPUTDATA
 
 echo "Downloading coarse resolution GCM NetCDF files..."
 cd data/coarse_gcm
@@ -22,7 +22,7 @@ wget -nc ${BASE_URL}/counterfactual_ws.nc
 cd ../../
 
 echo "Downloading scale factor NetCDF files..."
-cd create_terra/INPUTDATA
+cd 2_RUN_TERRACLIMATE/INPUTDATA
 
 wget -nc ${BASE_URL}/scalefactor_was.nc
 wget -nc ${BASE_URL}/scalefactor_pr.nc
