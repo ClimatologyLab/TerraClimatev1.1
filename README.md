@@ -82,7 +82,6 @@ This repository contains the code and supporting resources used to generate the 
 ```
 
 ---
-
 ## Processing Details
 
 ### 1. TerraClimate Field Generation
@@ -96,6 +95,7 @@ The `create_terra/` module contains the primary computational workflows used to 
 
 Intermediate datasets (e.g., CO₂ time series, smoothing parameters, scaling factors) are stored as `.mat` files and used across workflows.
 
+---
 
 ### 2. Additional Data Files for Code Repository
 
@@ -104,12 +104,13 @@ Additional data files required to run this code can be downloaded using the prov
 ```bash
 chmod +x download_support_data.sh
 ./download_support_data.sh
+```
 
 The `download_support_data.sh` script downloads the following types of files:
 
-- **Coarse-resolution GCM NetCDFs:** e.g., `counterfactual_pr.nc`, `counterfactual_srad.nc`, …
-- **Scale factor NetCDFs** (to `create_terra/INPUTDATA`): e.g., `scalefactor_pr.nc`, `scalefactor_was.nc`, …
-- **MATLAB support files** (to `create_terra/INPUTDATA`): e.g., `annual_co2.mat`, `global_smooth2.mat`, …
+* **Coarse-resolution GCM NetCDFs:** e.g., `counterfactual_pr.nc`, `counterfactual_srad.nc`, …
+* **Scale factor NetCDFs** (to `create_terra/INPUTDATA`): e.g., `scalefactor_pr.nc`, `scalefactor_was.nc`, …
+* **MATLAB support files** (to `create_terra/INPUTDATA`): e.g., `annual_co2.mat`, `global_smooth2.mat`, …
 
 ---
 
@@ -120,37 +121,33 @@ The `MAKE_NETCDFS/` module prepares final outputs for dissemination. Separate su
 * THREDDS-compatible outputs for data access services
 * Google Earth Engine ingestion formats
 * University of Idaho distributions, including:
-
   * Observational datasets (1950–present)
-  * Scenario datasets (+2 °C, +4 °C, and counterfactual conditions) (1950-present))
+  * Scenario datasets (+2 °C, +4 °C, and counterfactual conditions, 1950–present)
 
 ---
+
 ### 4. Data Accessibility
 
 To facilitate access to the TerraClimate dataset, we provide example code in **R**, **Python**, and **MATLAB**.
 
-Users can download rectangular subsets and point-based data via THREDDS web services using either OPeNDAP or NCSS, as outlined below:
+Users can download rectangular subsets and point-based data via THREDDS web services using either **OPeNDAP** or **NCSS**, as outlined below:
 
-### Using OPeNDAP
-- **Rectangular subsets**
-  - MATLAB
-  - Python
-  - R
-  - R (alternative version)
-- **Point data**
-  - MATLAB
-  - Python
-  - R
+* **Using OPeNDAP**
+  * Rectangular subsets
+    * MATLAB
+    * Python
+    * R
+    * R (alternative version)
+  * Point data
+    * MATLAB
+    * Python
+    * R
 
-### Using NCSS
-- **Batch scripts**
-  - Subsets
-  - Points
+* **Using NCSS**
+  * Batch scripts for:
+    * Rectangular subsets
+    * Point data
 
-### Using NCSS
-- **Batch scripts**
-  - Subsets
-  - Points
 
 ## Notes
 
