@@ -173,3 +173,10 @@ Users can download rectangular subsets and point-based data via THREDDS web serv
 * This repository is intended to support transparency and reproducibility of the TerraClimate v1.1 dataset generation workflow.
 
 ---
+
+## License
+
+All scripts and example datasets are licensed under **CC BY 4.0**.
+
+See [LICENSE.md](LICENSE.md) for full license text.
+---
