@@ -11,40 +11,74 @@ This repository contains the code and supporting resources used to generate the 
 1. **Core data generation (`create_terra/`)**
    Scripts and data used to construct TerraClimate fields, including water balance modeling, potential evapotranspiration (PET), and Palmer Drought Severity Index (PDSI) calculations for both historical and future scenarios.
 
-2. **NetCDF export (`MAKE_NETCDFS/`)**
+2. **Input data retrieval (`create_terra/INPUTDATA`)**
+   Input data files (MAT and NetCDF formats) can be downloaded to fill in the repository
+
+3. **NetCDF export (`MAKE_NETCDFS/`)**
    Utilities for formatting and exporting outputs into NetCDF files tailored for distribution platforms such as THREDDS and Google Earth Engine.
+
+4. **Data accessibility support (`/DATA_ACCESSIBILITY`)**
+   Code in R, Python and MATLAB to help support the subset data extraction for points and rectangles
 
 ---
 
 ## Directory Layout
 
 ```text
-├── create_terra/                     # Core TerraClimate data generation workflows
-│   ├── annual_co2.mat               # Annual CO₂ concentration data
-│   ├── download22.py                # Script to download input datasets
-│   ├── extractPDSI.m                # Extract Palmer Drought Severity Index (PDSI)
-│   ├── gatherPDSI2.m                # Assemble historical PDSI data
-│   ├── gatherPDSI2_future.m         # Assemble future scenario PDSI data
-│   ├── global_smooth2.mat           # Global smoothing parameters
-│   ├── make_terraclimate_obs.m      # Generate observational TerraClimate fields
-│   ├── make_terraclimate_future.m   # Generate future scenario datasets
+├── create_terra/                          # Core TerraClimate data generation workflows
+│   ├── INPUTDATA/                         # Static inputs and scaling factors
+│   │   ├── annual_co2.mat                 # Annual CO₂ concentration data
+│   │   ├── global_smooth2.mat             # Global smoothing parameters
+│   │   ├── scalefactorCMIP6.mat           # CMIP6 scaling factors
+│   │   ├── scalefactor_*.nc               # Variable-specific scaling NetCDFs
+│   ├── STEP1_DOWNLOADS/                   # ERA5 data acquisition pipeline
+│   │   ├── directions.md                  # Instructions for download workflow
+│   │   ├── PYTHON_SCRIPTS/                # Generated download scripts
+│   │   ├── PYTHON_TEMPLATES/              # Templates used to build scripts
+│   │   ├── step1_generate_python_scripts.sh  # Generate download scripts
+│   │   ├── step2_execute_python_scripts.sh   # Execute downloads
+│   │   ├── step3_summarize_year_of_ERA5.m    # Summarize yearly data
+│   │   ├── step4_compute_monthly_values_for_year.m # Monthly aggregation
+│   │   └── summarizeERA5.m                # Supporting summarization routines
+│   ├── OLD/                              # Legacy scripts
+│   │   └── download22.py
+│   ├── extractPDSI.m                     # Extract Palmer Drought Severity Index (PDSI)
+│   ├── gatherPDSI2.m                     # Assemble historical PDSI data
+│   ├── gatherPDSI2_future.m              # Assemble future scenario PDSI data
+│   ├── make_terraclimate_obs.m           # Generate observational TerraClimate fields
+│   ├── make_terraclimate_future.m        # Generate future scenario datasets
 │   ├── make_terraclimate_counterfactual.m # Counterfactual climate generation
-│   ├── monthlyPET_co2.m             # PET calculation including CO₂ effects
-│   ├── runPDSI.m                    # Run PDSI model (historical)
-│   ├── runPDSI_future.m             # Run PDSI model (future scenarios)
-│   ├── run_pet_obs.m                # PET for observational data
-│   ├── run_pet_counterfactual_future.m    # PET for counterfactual/future runs
+│   ├── monthlyPET_co2.m                  # PET calculation including CO₂ effects
+│   ├── runPDSI.m                         # Run PDSI model (historical)
+│   ├── runPDSI_future.m                  # Run PDSI model (future scenarios)
+│   ├── run_pet_obs.m                     # PET for observational data
+│   ├── run_pet_counterfactual_future.m   # PET for counterfactual/future runs
 │   ├── run_vpd_pet_counterfactual_future.m # VPD + PET workflows
 │   ├── run_wb_terra_counterfactual_future.m # Water balance modeling
-│   ├── runsnow.m                    # Snow model routines
-│   ├── scalefactorCMIP6.mat         # CMIP6 scaling factors
-│   └── readme.txt                   # Module-specific notes
+│   ├── runsnow.m                         # Snow model routines
+│   └── readme.txt                        # Module-specific notes
 │
-├── MAKE_NETCDFS/                    # Export processed data to NetCDF format
-│   ├── MAKE_NETCDFS_CLIMOS/         # NetCDF generation for climatologies (THREDDS)
-│   ├── MAKE_NETCDFS_GEE/            # NetCDF outputs formatted for Google Earth Engine
-│   ├── MAKE_NETCDFS_UIDAHO/         # NetCDF generation for observations (1950–present)
-│   └── MAKE_NETCDFS_UIDAHO_+2C+4C/  # NetCDF for warming scenarios (+2°C, +4°C, counterfactual)
+├── DATA_ACCESSIBILITY/                   # Scripts for accessing TerraClimate data
+│   ├── POINT_SUBSETS/                    # Extract time series at point locations
+│   │   ├── *.m / *.py / *.R / *.sh       # MATLAB, Python, R, and shell examples
+│   ├── RECTANGLE_SUBSETS/               # Extract spatial subsets (bounding boxes)
+│   │   ├── *.m / *.py / *.R / *.sh       # Multi-language implementations
+│   └── terraclimate_opendap_python_modified.py # OPeNDAP example (Python)
+│
+├── MAKE_CLIMO/                           # Climatology generation workflows
+│   ├── climo_maps.m                      # Visualization of climatologies
+│   ├── create_climo.m                    # Core climatology computation
+│   ├── runclimo_19812010.m               # 1981–2010 climatology
+│   ├── runclimo_19912020.m               # 1991–2020 climatology
+│   └── readme.txt                        # Notes on climatology generation
+│
+├── MAKE_NETCDFS/                         # Export processed data to NetCDF format
+│   ├── MAKE_NETCDFS_CLIMOS/              # NetCDF generation for climatologies
+│   ├── MAKE_NETCDFS_GEE/                 # Outputs formatted for Google Earth Engine
+│   ├── MAKE_NETCDFS_UIDAHO/              # NetCDF generation for observations (1950–present)
+│   └── MAKE_NETCDFS_UIDAHO_+2C+4C/       # NetCDF for warming scenarios (+2°C, +4°C)
+│
+└── README.md                             # Repository overview and documentation
 ```
 
 ---
@@ -62,7 +96,10 @@ The `create_terra/` module contains the primary computational workflows used to 
 
 Intermediate datasets (e.g., CO₂ time series, smoothing parameters, scaling factors) are stored as `.mat` files and used across workflows.
 
+### 2. Additional data files for code repository
+
 Additional data files to support this code can be downloaded here: 
+
 * NetCDF files of coarse resolution GCM data:
   * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/counterfactual_pr.nc
   * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/counterfactual_srad.nc
@@ -85,7 +122,7 @@ Additional data files to support this code can be downloaded here:
 
 ---
 
-### 2. NetCDF Formatting and Distribution
+### 3. NetCDF Formatting and Distribution
 
 The `MAKE_NETCDFS/` module prepares final outputs for dissemination. Separate submodules support:
 
@@ -97,12 +134,11 @@ The `MAKE_NETCDFS/` module prepares final outputs for dissemination. Separate su
   * Scenario datasets (+2 °C, +4 °C, and counterfactual conditions) (1950-present))
 
 ---
+### 4. Data Accessibility
 
-### 3. Data Accessibility
+To facilitate access to the TerraClimate dataset, we provide example code in **R**, **Python**, and **MATLAB**.
 
-We have included code samples in R, Python and MATLAB to aid in accessibility of the TerraClimate data files: 
-
-## Download subsets and point data using THREDDS web services
+Users can download rectangular subsets and point-based data via THREDDS web services using either OPeNDAP or NCSS, as outlined below:
 
 ### Using OPeNDAP
 - **Rectangular subsets**
@@ -110,11 +146,15 @@ We have included code samples in R, Python and MATLAB to aid in accessibility of
   - Python
   - R
   - R (alternative version)
-
 - **Point data**
   - MATLAB
   - Python
   - R
+
+### Using NCSS
+- **Batch scripts**
+  - Subsets
+  - Points
 
 ### Using NCSS
 - **Batch scripts**
