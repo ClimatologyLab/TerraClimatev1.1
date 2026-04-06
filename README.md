@@ -64,13 +64,24 @@ Intermediate datasets (e.g., CO₂ time series, smoothing parameters, scaling fa
 
 Additional data files to support this code can be downloaded here: 
 * NetCDF files of coarse resolution GCM data:
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPT/counterfactual_pr.nc
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPT/counterfactual_srad.nc
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPT/counterfactual_tdmean.nc
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPT/counterfactual_tmax.nc
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPT/counterfactual_tmin.nc
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPT/counterfactual_vap.nc
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPT/counterfactual_ws.nc
+  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/counterfactual_pr.nc
+  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/counterfactual_srad.nc
+  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/counterfactual_tdmean.nc
+  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/counterfactual_tmax.nc
+  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/counterfactual_tmin.nc
+  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/counterfactual_vap.nc
+  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/counterfactual_ws.nc
+* NetCDF files of scale factors which should go in the folder create_terra/INPUTDATA
+  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/scalefactor_was.nc
+  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/scalefactor_pr.nc
+  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/scalefactor_huss.nc
+  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/scalefactor_rsds.nc
+  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/scalefactor_tasmax.nc
+  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/scalefactor_tasmin.nc
+* MATLAB files which should go in the folder create_terra/INPUTDATA
+  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/annual_co2.mat
+  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/global_smooth2.mat
+  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/scalefactorCMIP6.mat
 
 ---
 
