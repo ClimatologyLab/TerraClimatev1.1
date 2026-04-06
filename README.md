@@ -96,29 +96,20 @@ The `create_terra/` module contains the primary computational workflows used to 
 
 Intermediate datasets (e.g., CO₂ time series, smoothing parameters, scaling factors) are stored as `.mat` files and used across workflows.
 
-### 2. Additional data files for code repository
 
-Additional data files to support this code can be downloaded here: 
+### 2. Additional Data Files for Code Repository
 
-* NetCDF files of coarse resolution GCM data:
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/counterfactual_pr.nc
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/counterfactual_srad.nc
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/counterfactual_tdmean.nc
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/counterfactual_tmax.nc
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/counterfactual_tmin.nc
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/counterfactual_vap.nc
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/counterfactual_ws.nc
-* NetCDF files of scale factors which should go in the folder create_terra/INPUTDATA
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/scalefactor_was.nc
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/scalefactor_pr.nc
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/scalefactor_huss.nc
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/scalefactor_rsds.nc
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/scalefactor_tasmax.nc
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/scalefactor_tasmin.nc
-* MATLAB files which should go in the folder create_terra/INPUTDATA
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/annual_co2.mat
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/global_smooth2.mat
-  * wget https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/scalefactorCMIP6.mat
+Additional data files required to run this code can be downloaded using the provided bash script:
+
+```bash
+chmod +x download_support_data.sh
+./download_support_data.sh
+
+The `download_support_data.sh` script downloads the following types of files:
+
+- **Coarse-resolution GCM NetCDFs:** e.g., `counterfactual_pr.nc`, `counterfactual_srad.nc`, …
+- **Scale factor NetCDFs** (to `create_terra/INPUTDATA`): e.g., `scalefactor_pr.nc`, `scalefactor_was.nc`, …
+- **MATLAB support files** (to `create_terra/INPUTDATA`): e.g., `annual_co2.mat`, `global_smooth2.mat`, …
 
 ---
 
