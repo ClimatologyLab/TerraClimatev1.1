@@ -1,0 +1,1 @@
+/data/obs/obs/gridded/terraclim/NETCDF/readme.txt
