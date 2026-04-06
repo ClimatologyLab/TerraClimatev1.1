@@ -1,147 +1,83 @@
-delta=4;
+% set global warming level
+delta_temp=4;
+var=1;
+targetyear=2015;
+% load scalefactors from netCDF
+switch var
+case 1, Y=ncread('scalefactor_tasmax.nc','lat');X=ncread('scalefactor_tasmax.nc','lon');scalefactor=ncread('scalefactor_tasmax.nc','ps_mean');scalefactors=ncread('scalefactor_tasmax.nc','ps_std');
+case 2, Y=ncread('scalefactor_tasmin.nc','lat');X=ncread('scalefactor_tasmin.nc','lon');scalefactor=ncread('scalefactor_tasmin.nc','ps_mean');scalefactors=ncread('scalefactor_tasmin.nc','ps_std');
+case 3, Y=ncread('scalefactor_was.nc','lat');X=ncread('scalefactor_was.nc','lon');scalefactor=ncread('scalefactor_was.nc','ps_mean');scalefactors=ncread('scalefactor_was.nc','ps_std');
+case 4, Y=ncread('scalefactor_rsds.nc','lat');X=ncread('scalefactor_rsds.nc','lon');scalefactor=ncread('scalefactor_rsds.nc','ps_mean');scalefactors=ncread('scalefactor_rsds.nc','ps_std');
+case 5, Y=ncread('scalefactor_pr.nc','lat');X=ncread('scalefactor_pr.nc','lon');scalefactor=ncread('scalefactor_pr.nc','ps_mean');scalefactors=ncread('scalefactor_pr.nc','ps_std');
+case 6, Y=ncread('scalefactor_tdmean.nc','lat');X=ncread('scalefactor_tdmean.nc','lon');scalefactor=ncread('scalefactor_tdmean.nc','ps_mean');scalefactors=ncread('scalefactor_tdmean.nc','ps_std');
+end
 
-load scalefactorCMIP6.mat
-% use median and correct end points
-scalefactor=nanmedian(scalefactor,5);
-scalefactor(1,:,:,:)=scalefactor(2,:,:,:);
-scalefactor(end,:,:,:)=scalefactor(end-1,:,:,:);
-scalefactor(:,1,:,:)=scalefactor(:,2,:,:);
-scalefactor(:,end,:,:)=scalefactor(:,end-1,:,:);
-
-scalefactors=nanmedian(scalefactors,5);
-scalefactors(1,:,:,:)=scalefactors(2,:,:,:);
-scalefactors(end,:,:,:)=scalefactors(end-1,:,:,:);
-scalefactors(:,1,:,:)=scalefactors(:,2,:,:);
-scalefactors(:,end,:,:)=scalefactors(:,end-1,:,:);
-
-t=scalefactor(:,1:180,:,:);scalefactor=scalefactor(:,181:end,:,:);scalefactor(:,182:361,:,:)=t;scalefactor(:,180,:,:)=scalefactor(:,179,:,:);scalefactor(:,181,:,:)=scalefactor(:,182,:,:);
-t=scalefactors(:,1:180,:,:);scalefactors=scalefactors(:,181:end,:,:);scalefactors(:,182:361,:,:)=t;scalefactors(:,180,:,:)=scalefactors(:,179,:,:);scalefactors(:,181,:,:)=scalefactors(:,182,:,:);
-
-%cap scalefactors for precipitation
-s=scalefactors(:,:,:,5);s(s>.5)=.5;scalefactors(:,:,:,5)=s;scalefactors(:,:,:,5)=0;
-s=scalefactor(:,:,:,5);s(s>.5)=.5;scalefactor(:,:,:,5)=s;
-
-%cap scalefactors for srad
-s=scalefactor(:,:,:,6);s(s<-15)=-15;scalefactor(:,:,:,6)=s;
-
-%cap scalefactors for dew
-s=scalefactor(:,:,:,8);s(s<0)=0;scalefactor(:,:,:,8)=s;
-
-% remove the 11-year moving mean GMT from the observed part as well relative to base period
-load GMT_NASA
-GMT=GMT(:,3)+.19;
+% remove the 11-year moving mean GMT from the observed part as well relative to base period, NASA GISS is adjusted to be relative to a 1850-1900 base reference
+c=readtable('NASAGISS.csv');
+GMT=c(:,3);
 % loess 5-year filter of GMT relative to 1850-1900 baseline
-
+GMT=movmean(GMT,5);
 [x,y]=meshgrid(X,Y);
-d='/data/obs/obs/gridded/terraclim/MAT/';
-% loop through years 1950-2025
-% ppt
-%l={'ppt';'vap';'tmax';'tmin';'srad';'ws'};
-%pptdata;vapdata;tmaxdata;tmindata;sraddad;winddata
-load([d,'/lonlatel']);
-clear el
-%lon=lon(f,f2);
-%lat=lat(f,f2);
-for i=1:76
 
-d2=delta-GMT(1949+i-1879);
+% historical TerraClimate data and climatologies need to be acquired from
+% http://thredds.northwestknowledge.net:8080/thredds/catalog/TERRACLIMATE_ALL/climatology/catalog.html
+% http://thredds.northwestknowledge.net:8080/thredds/catalog/TERRACLIMATE_ALL/data/catalog.html
 
- for j=1:6
-switch j,
-case 1, 
-
-m=matfile([d,'tmax_',num2str(1949+i)]);data=m.tmaxdata;%(f,f2,:);
-load /data/obs/obs/gridded/terraclim/MAT/climo_19702000.mat tmaxdata
-data=data-tmaxdata;
-for j=1:12
- data(:,:,j)=data(:,:,j).*interp2(x,y,1+d2.*scalefactors(:,:,j,1),lon,lat);
+d2=delta_temp-GMT(targetyear-1879);
+lat=ncread('TerraClimate_tmax_',num2str(targetyear),'.nc'],'lat');
+lon=ncread('TerraClimate_tmax_',num2str(targetyear),'.nc'],'lat');
+switch var,
+case 1, data=ncread('TerraClimate_tmax_',num2str(targetyear),'.nc'],'tmax');refdata=ncread('TerraClimate_19912020_tmax.nc','tmax');
+case 2, data=ncread('TerraClimate_tmin_',num2str(targetyear),'.nc'],'tmin');refdata=ncread('TerraClimate_19912020_tmin.nc','tmin');
+case 3, data=ncread('TerraClimate_ws_',num2str(targetyear),'.nc'],'ws');refdata=ncread('TerraClimate_19912020_ws.nc','ws');
+case 4, data=ncread('TerraClimate_srad_',num2str(targetyear),'.nc'],'srad');refdata=ncread('TerraClimate_19912020_srad.nc','srad');
+case 5, data=ncread('TerraClimate_ppt_',num2str(targetyear),'.nc'],'ppt');refdata=ncread('TerraClimate_19912020_ppt.nc','ppt');
+case 6, data=ncread('TerraClimate_vap_',num2str(targetyear),'.nc'],'vap');refdata=ncread('TerraClimate_19912020_vap.nc','vap');
 end
-  data=data+tmaxdata;
-  %get anomaly; then multiply anomaly by the scalefactors; finally add scalefactor to data  
-  for j=1:12
-   data(:,:,j)=data(:,:,j)+d2*interp2(x,y,scalefactor(:,:,j,1),lon,lat);
- end
-data=single(round(data,1));save(['terra_',num2str(delta),'_tmax_',num2str(1949+i)],'-v7.3','data');clear data
-case 2, 
-m=matfile([d,'tmin_',num2str(1949+i)]);data=m.tmindata;%(f,f2,:);
-load /data/obs/obs/gridded/terraclim/MAT/climo_19702000.mat tmindata
-data=data-tmindata;
-for j=1:12
- data(:,:,j)=data(:,:,j).*interp2(x,y,1+d2.*scalefactors(:,:,j,2),lon,lat);
-end
-  data=data+tmindata;
-  %get anomaly; then multiply anomaly by the scalefactors; finally add scalefactor to data  
-  for j=1:12
-   data(:,:,j)=data(:,:,j)+d2*interp2(x,y,scalefactor(:,:,j,2),lon,lat);
- end
-data=single(round(data,1));save(['terra_',num2str(delta),'_tmin_',num2str(1949+i)],'-v7.3','data');clear data
 
-case 3, 
-m=matfile([d,'vap_',num2str(1949+i)]);data=m.vapdata;%(f,f2,:);
-load /data/obs/obs/gridded/terraclim/MAT/climo_19702000.mat vapdata
-% covert to dewpoint
-data=data*10;vapdata=vapdata*10;
-vapdata(vapdata==0)=1e-4;data(data==0)=1e-4;
+
+if var<=4 % simple additive approach
+
+data=data-refdata;
+for j=1:12
+ data(:,:,j)=data(:,:,j).*interp2(x,y,1+d2.*scalefactors(:,:,j),lon,lat);
+end
+%get anomaly; then multiply anomaly by the scalefactors; finally add scalefactor to data  
+data=data+refdata;
+for j=1:12
+   data(:,:,j)=data(:,:,j)+d2*interp2(x,y,scalefactor(:,:,j),lon,lat);
+end
+elseif var==6
+% minimum bounds for ref data to 0.1 to avoid dividing by zero
+refdata(refdata<.1)=.1;
+data=data./refdata;
+for j=1:12
+ data(:,:,j)=data(:,:,j).*interp2(x,y,1+d2.*scalefactors(:,:,j),lon,lat);
+end
+data=data.*refdata;
+%get anomaly; then multiply anomaly by the scalefactors; finally add scalefactor to data  
+for j=1:12
+   data(:,:,j)=data(:,:,j).*(1+d2*interp2(x,y,scalefactor(:,:,j,5),lon,lat));
+end
+% cast any data that goes below 0 to 0
+data(data<0)=0;
+elseif var==5
+% covert from vapor pressure to dewpoint temperature
+data=data*10;refdata=refdata*10;
+% set minimum bounds
+refdata(refdata==0)=1e-4;data(data==0)=1e-4;
 data=(243.5*log(data/6.112))./(17.67-log(data/6.112));
-vapdata=(243.5*log(vapdata/6.112))./(17.67-log(vapdata/6.112));
-data=data-vapdata;
+refdata=(243.5*log(refdata/6.112))./(17.67-log(refdata/6.112));
+data=data-refdata;
 for j=1:12
- data(:,:,j)=data(:,:,j).*interp2(x,y,1+d2.*scalefactors(:,:,j,8),lon,lat);
+ data(:,:,j)=data(:,:,j).*interp2(x,y,1+d2.*scalefactors(:,:,j),lon,lat);
 end
-  data=data+vapdata;
-  %get anomaly; then multiply anomaly by the scalefactors; finally add scalefactor to data  
-  for j=1:12
-   data(:,:,j)=data(:,:,j)+d2*interp2(x,y,scalefactor(:,:,j,8),lon,lat);
- end
+data=data+refdata;
+%get anomaly; then multiply anomaly by the scalefactors; finally add scalefactor to data  
+for j=1:12
+ data(:,:,j)=data(:,:,j)+d2*interp2(x,y,scalefactor(:,:,j,8),lon,lat);
+end
 data=6.112*exp(17.67*data./(243.5+data));
 % convert dewpoint to vap
 data=data/10;
-data=single(round(data,4));save(['terra_',num2str(delta),'_vap_',num2str(1949+i)],'-v7.3','data');clear data
-
-case 4,
-m=matfile([d,'ppt_',num2str(1949+i)]);data=m.pptdata;%(f,f2,:);
-load /data/obs/obs/gridded/terraclim/MAT/climo_19702000.mat pptdata;pptdata(pptdata<.1)=.1;
-data=data./pptdata;
-for j=1:12
- data(:,:,j)=data(:,:,j).*interp2(x,y,1+d2.*scalefactors(:,:,j,5),lon,lat);
-end
-  data=data.*pptdata;
-  %get anomaly; then multiply anomaly by the scalefactors; finally add scalefactor to data  
-  for j=1:12
-   data(:,:,j)=data(:,:,j).*(1+d2*interp2(x,y,scalefactor(:,:,j,5),lon,lat));
- end
-data(data<0)=0;
-data=single(round(data,1));save(['terra_',num2str(delta),'_ppt_',num2str(1949+i)],'-v7.3','data');clear data
-
-case 5,
-m=matfile([d,'ws_',num2str(1949+i)]);data=m.winddata;%(f,f2,:);
-load /data/obs/obs/gridded/terraclim/MAT/climo_19702000.mat winddata
-data=data-winddata;
-for j=1:12
- data(:,:,j)=data(:,:,j).*interp2(x,y,1+d2.*scalefactors(:,:,j,7),lon,lat);
-end
-  data=data+winddata;
-  %get anomaly; then multiply anomaly by the scalefactors; finally add scalefactor to data  
-  for j=1:12
-   data(:,:,j)=data(:,:,j)+d2*interp2(x,y,scalefactor(:,:,j,7),lon,lat);
- end
-data(data<0)=0;
-data=single(round(data,1));save(['terra_',num2str(delta),'_wind_',num2str(1949+i)],'-v7.3','data');clear data
-
-case 6,
-m=matfile([d,'srad_',num2str(1949+i)]);data=m.sraddata;%(f,f2,:);
-load /data/obs/obs/gridded/terraclim/MAT/climo_19702000.mat sraddata
-data=data-sraddata;
-for j=1:12
- data(:,:,j)=data(:,:,j).*interp2(x,y,1+d2.*scalefactors(:,:,j,6),lon,lat);
-end
-  data=data+sraddata;
-  %get anomaly; then multiply anomaly by the scalefactors; finally add scalefactor to data  
-  for j=1:12
-   data(:,:,j)=data(:,:,j)+d2*interp2(x,y,scalefactor(:,:,j,6),lon,lat);
- end
-data(data<0)=0;
-data=single(round(data,1));save(['terra_',num2str(delta),'_srad_',num2str(1949+i)],'-v7.3','data');clear data
-end
-end
 end

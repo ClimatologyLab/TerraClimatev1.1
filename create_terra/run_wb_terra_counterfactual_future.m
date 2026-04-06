@@ -1,22 +1,9 @@
 %delta=4;
-year=1950;
-load /data/backups/home_pluvial_abatz/TerraClimate/WORLDCLIM/worldclimsoil2;
-soilt=single(soilt);
-ff=find(soilt>0);
-soilt=soilt(:)';
-chunk=1044384;
-dirr2='/home/abatz/CMIP6/';
-ordir=pwd;
+% need to acquire a the soil water holding capacity layer https://hess.copernicus.org/articles/20/1459/2016/hess-20-1459-2016.pdf
 for year=1950:2025
-cd /data/backups/home_pluvial_abatz/CALCULATIONS/
-%load([dirr2,'OLD/wbupdate_',num2str(1959)],'snowdata','soildata','runoffdata','runoffsnowdata');
 if year>1950
-
-if exist('delta')==1
- load([dirr2,'terra_',num2str(delta),'_wbupdate_',num2str(year-1)],'snowdata','soildata','SSRAIN','SSSNOW');
-else
- load([dirr2,'terra_wbupdate_',num2str(year-1)],'snowdata','soildata','SSRAIN','SSSNOW');
-end
+% get initial conditions from prior year
+load([dirr2,'terra_wbupdate_',num2str(year-1)],'snowdata','soildata','SSRAIN','SSSNOW');
 soillast=soildata(:,:,12);
 snowlast=snowdata(:,:,12);
 SSSNOW=SSSNOW(:)';
