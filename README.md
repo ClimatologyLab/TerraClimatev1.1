@@ -8,14 +8,14 @@ This repository contains the code and supporting resources used to generate the 
 
 ## Overview of Repository Directories
 
-1. **Code for raw data retrieval (`modules/era5_downloads/*.sh`)**
+1. **Code for download and process ERA5 data (`modules/era5_downloads/*.sh`)**
    Code for retrieving the raw data files from ERA5 is supplied in the modules/era5_downloads directory. This python code connects to the Climate Data Store fore retrieval of 6-hourly ERA5 data. This data is used to fill in the monthly ERA5 (1950-Current year) MATLAB file data/inputs/monthly_era5summary.mat needed for the TerraClimate runs. 
 
-2. **Input data retrieval (`bin/*.sh`)**
+2. **Code to download Input data (`bin/*.sh`)**
    Input data files (MAT and NetCDF formats) for the directory data/inputs can be downloaded with the bash scripts located in /bin. These files are needed to support the run of the main script for generating TerraClimate files. 
 
 
-3. **Input data needed (`data/inputs`)**  
+3. **Folder for input data to scripts (`data/inputs`)**  
    The `data/inputs/` directory contains the essential datasets used by the TerraClimate workflows, including:
 
    - CO₂ time series (`annual_co2.mat`) for PET and drought calculations.  
@@ -26,14 +26,14 @@ This repository contains the code and supporting resources used to generate the 
 
    These inputs provide the base climate, soil, and scaling information needed to generate historical, future, and counterfactual TerraClimate fields in `data/final/`.
 
-4. **Core data generation (`scripts/run_terraclimate.m`)**
+4. **Core script for data generation (`scripts/run_terraclimate.m`)**
    A script to construct TerraClimate fields, including water balance modeling, potential evapotranspiration (PET), and Palmer Drought Severity Index (PDSI) calculations for both historical and scenarios (+2C, +4C, counterfactual). 
 
 
-3. **Functions used (`modules/`)**
+3. **Functions used in core script(`modules/`)**
    Functions called in this script are in the modules/ directory. These functions aid in creating the different variables for TerraClimate.
 
-3. **Data generated (`data/final`)**
+3. **Folder for data generated (`data/final`)**
    Data generated for the TerraClimate files are stored in the `data/final` directory:
 
    * `<variable_name>_<year>.mat` — observational data files
@@ -42,7 +42,7 @@ This repository contains the code and supporting resources used to generate the 
    * `<variable_name>_cf_<year>.mat` — counterfactual scenario
 
 
-4. **Data accessibility support (`examples/`)**
+4. **Code to aid in downloading TerraClimate subsets (`examples/`)**
    Code examples (written in R, Python and MATLAB) are provided to help support data extraction of the TerraClimate files hosted at the University of Idaho. These examples are written in R, Python and MATLAB with options for point and rectangle subsets extractions. These examples utilize the THREDDS web services at the University of Idaho. 
 
 ---
