@@ -8,12 +8,11 @@ This repository contains the code and supporting resources used to generate the 
 
 ## Overview of Repository Directories
 
-
-1. **Input data retrieval (`bin/*.sh`)**
-   Input data files (MAT and NetCDF formats) for the directory data/inputs can be downloaded with the bash scripts located in /bin. These files are needed to support the run of the main script for generating TerraClimate files. 
-
-2. **Code for raw data retrieval (`modules/era5_downloads/*.sh`)**
+1. **Code for raw data retrieval (`modules/era5_downloads/*.sh`)**
    Code for retrieving the raw data files from ERA5 is supplied in the modules/era5_downloads directory. This python code connects to the Climate Data Store fore retrieval of 6-hourly ERA5 data. This data is used to fill in the monthly ERA5 (1950-Current year) MATLAB file data/inputs/monthly_era5summary.mat needed for the TerraClimate runs. 
+
+2. **Input data retrieval (`bin/*.sh`)**
+   Input data files (MAT and NetCDF formats) for the directory data/inputs can be downloaded with the bash scripts located in /bin. These files are needed to support the run of the main script for generating TerraClimate files. 
 
 
 3. **Input data needed (`data/inputs`)**  
