@@ -45,9 +45,8 @@ function make_wb(path_to_input_data,path_to_int_data,mode,delta)
 % ---------------------------------------------------------
 % Initial spin up
 % ---------------------------------------------------------
-% DEADBEEF: Need to acquire a the soil water holding capacity layer
-% https://hess.copernicus.org/articles/20/1459/2016/hess-20-1459-2016.pdf
-soilt =  ; % soil water holding capacity grid
+m=matfile([path_to_input_data,'worldclimsoil2']);
+soilt = m.soilt ; % soil water holding capacity grid
 
 chunk = 100 ; %chunk size for parallel processing
 

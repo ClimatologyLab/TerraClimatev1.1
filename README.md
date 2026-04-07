@@ -68,6 +68,7 @@ This repository contains the code and supporting resources used to generate the 
 │   │   ├── scalefactor_tasmax.nc
 │   │   ├── scalefactor_tasmin.nc
 │   │   └── scalefactor_was.nc
+│   │   └──  worldclimsoil2.mat
 │   ├── intermediary
 ├── examples
 │   ├── point_subsets
@@ -141,6 +142,33 @@ Example usage:
 chmod +x download_support_data.sh
 ./download_support_data.sh
 ```
+
+Input Data Files
+
+The inputs/ folder contains datasets used across the TerraClimate workflows:
+
+annual_co2.mat — Annual global CO₂ concentration time series for PET and drought modeling
+counterfactual_*.nc — Counterfactual climate forcing data for various variables:
+counterfactual_pr.nc — precipitation
+counterfactual_srad.nc — incoming solar radiation
+counterfactual_tdmean.nc — mean dew point temperature
+counterfactual_tmax.nc — maximum temperature
+counterfactual_tmin.nc — minimum temperature
+counterfactual_vap.nc — vapor pressure
+counterfactual_ws.nc — wind speed
+global_smooth2.mat — Spatial smoothing coefficients for climate variables (used in bias correction or interpolation)
+lonlatel.mat — Longitude and latitude grid information for all TerraClimate points
+NASAGISS.csv — NASA GISS reference climate data (used for validation or comparison)
+scalefactorCMIP6.mat - Consolidated CMIP6 scaling factors for multiple climate variables (precipitation, temperature, radiation, wind, humidity) stored in a single MATLAB file for convenience
+scalefactor_pr.nc — precipitation scaling factors
+scalefactor_tasmax.nc — maximum temperature scaling factors
+scalefactor_tasmin.nc — minimum temperature scaling factors
+scalefactor_rsds.nc — surface radiation scaling factors
+scalefactor_was.nc — wind speed scaling factors
+scalefactor_huss.nc — specific humidity scaling factors
+worldclimsoil2.mat — Representative soil properties used for hydrologic modeling (e.g., field capacity, wilting point), derived from WorldClim and FAO data. https://hess.copernicus.org/articles/20/1459/2016/hess-20-1459-2016.pdf
+
+These files provide the essential input data required to generate historical, future, and counterfactual TerraClimate fields, and are used by scripts in modules/ and examples/.
 
 ---
 ### 2. TerraClimate Script
