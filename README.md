@@ -116,8 +116,6 @@ This repository contains the code and supporting resources used to generate the 
 │   │   ├── step3_summarize_year_of_ERA5.m
 │   │   ├── step4_compute_monthly_values_for_year.m
 │   │   └── summarizeERA5.m
-│   ├── TRASH
-│   │   └── make_pet_scenario.m
 │   ├── hydro_tax_robase.m
 │   ├── make_pet.m
 │   ├── make_snow.m
