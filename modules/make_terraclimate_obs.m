@@ -43,20 +43,22 @@ dirr = '/data/obs/obs/gridded/terraclim/MAT/';
 %myr = 
 
 %   mclimo - Monthly climatology (3-D: lon x lat x month)
+
 %   mbase  - Monthly base field for interpolation (3-D: lon x lat x month)
 %mclimo = 
 
 %mbase = 
 
-%   lon, lat - Longitude and latitude grids for output
-
+%------------------------------------------
+% Get  lon, lat - Longitude and latitude grids for TerraClimate grid
+%------------------------------------------
+load([path_to_input_data,'lonlatel.mat']); %lat,lon
 
 %------------------------------------------
 % Get  mlon, mlat - Longitude and latitude grids for input climatology
 %------------------------------------------
-addpath('../data/scale_factor');
-x=ncread('scalefactor_tasmax.nc','lon');
-y=ncread('scalefactor_tasmax.nc','lat');
+x=ncread([path_to_input_data,'scalefactor_tasmax.nc'],'lon');
+y=ncread([path_to_input_data,'scalefactor_tasmax.nc'],'lat');
 [mlon,mlat]=meshgrid(x,y);
 [mlon,mlat]=meshgrid(x,y);
 
