@@ -16,7 +16,7 @@ This repository contains the code and supporting resources used to generate the 
    Code for retrieving the raw data files from ERA5 is supplied in the modules/era5_downloads directory. This python code connects to the Climate Data Store fore retrieval of 6-hourly ERA5 data. This data is used to fill in the monthly ERA5 (1950-Current year) MATLAB file data/inputs/monthly_era5summary.mat needed for the TerraClimate runs. 
 
 
-2. **Core data generation (`scripts/run_full_example.m`)**
+2. **Core data generation (`scripts/run_terraclimate.m`)**
    A script to construct TerraClimate fields, including water balance modeling, potential evapotranspiration (PET), and Palmer Drought Severity Index (PDSI) calculations for both historical and scenarios (+2C, +4C, counterfactual). 
 
 
