@@ -2,83 +2,124 @@
 
 ## Repository Structure and Processing Workflow
 
-This repository contains the code and supporting resources used to generate the TerraClimate v1.1 dataset, including observational fields and future scenario (+2C,+4C, counterfactual) products. The workflow is organized into three primary stages: (1) download supporting files, (2) data generation, (3) NetCDF export. We have also added code support for downloading subsets of TerraClimate.
+This repository contains the code and supporting resources used to generate the TerraClimate v1.1 dataset, including observational fields and future scenario (+2C,+4C, counterfactual) products. The workflow is organized into primary stages: (1) download supporting files, and (2) running a MATLAB script to generate the TerraClimate files for specific variables and years. Additionally in this repository are scripts to aid in extracting subsets from the data hosted at the University of Idaho.
 
 ---
 
-## Overview of Workflow and Support
+## Overview of Repository Directories
 
-1. **Core data generation (`create_terra/`)**
-   Scripts and data used to construct TerraClimate fields, including water balance modeling, potential evapotranspiration (PET), and Palmer Drought Severity Index (PDSI) calculations for both historical and future scenarios.
 
-2. **Input data retrieval (`create_terra/INPUTDATA`)**
-   Input data files (MAT and NetCDF formats) can be downloaded to fill in the repository
+1. **Input data retrieval (`bin/*.sh`)**
+   Input data files (MAT and NetCDF formats) for the directory data/inputs can be downloaded with the bash scripts located in /bin. These files are needed to support the run of the main script for generating TerraClimate files. 
 
-3. **NetCDF export (`MAKE_NETCDFS/`)**
-   Utilities for formatting and exporting outputs into NetCDF files tailored for distribution platforms such as THREDDS and Google Earth Engine.
+2. **Code for raw data retrieval (`bin/*.sh`)**
+   Code for retrieving the raw data files from ERA5 is supplied in the modules/era5_downloads directory. This python code connects to the Climate Data Store fore retrieval of 6-hourly ERA5 data. This data is used to fill in the monthly ERA5 (1950-Current year) MATLAB file data/inputs/monthly_era5summary.mat needed for the TerraClimate runs. 
 
-4. **Data accessibility support (`/DATA_ACCESSIBILITY`)**
-   Code in R, Python and MATLAB to help support the subset data extraction for points and rectangles
+
+2. **Core data generation (`scripts/run_full_example.m`)**
+   A script to construct TerraClimate fields, including water balance modeling, potential evapotranspiration (PET), and Palmer Drought Severity Index (PDSI) calculations for both historical and scenarios (+2C, +4C, counterfactual). 
+
+
+3. **Functions used (`modules/`)**
+   Functions called in this script are in the modules/ directory. These functions aid in creating the different variables for TerraClimate.
+
+3. **Data generated (`data/final`)**
+   Data generated for the TerraClimate files are stored in the `data/final` directory:
+
+   * `<variable_name>_<year>.mat` — observational data files
+   * `<variable_name>_2C_<year>.mat` — +2 °C warming scenario
+   * `<variable_name>_4C_<year>.mat` — +4 °C warming scenario
+   * `<variable_name>_cf_<year>.mat` — counterfactual scenario
+
+
+4. **Data accessibility support (`examples/`)**
+   Code examples (written in R, Python and MATLAB) are provided to help support data extraction of the TerraClimate files hosted at the University of Idaho. These examples are written in R, Python and MATLAB with options for point and rectangle subsets extractions. These examples utilize the THREDDS web services at the University of Idaho. 
 
 ---
 
 ## Directory Layout
 
 ```text
-├── create_terra/                          # Core TerraClimate data generation workflows
-│   ├── INPUTDATA/                         # Static inputs and scaling factors
-│   │   ├── annual_co2.mat                 # Annual CO₂ concentration data
-│   │   ├── global_smooth2.mat             # Global smoothing parameters
-│   │   ├── scalefactorCMIP6.mat           # CMIP6 scaling factors
-│   │   ├── scalefactor_*.nc               # Variable-specific scaling NetCDFs
-│   ├── STEP1_DOWNLOADS/                   # ERA5 data acquisition pipeline
-│   │   ├── directions.md                  # Instructions for download workflow
-│   │   ├── PYTHON_SCRIPTS/                # Generated download scripts
-│   │   ├── PYTHON_TEMPLATES/              # Templates used to build scripts
-│   │   ├── step1_generate_python_scripts.sh  # Generate download scripts
-│   │   ├── step2_execute_python_scripts.sh   # Execute downloads
-│   │   ├── step3_summarize_year_of_ERA5.m    # Summarize yearly data
-│   │   ├── step4_compute_monthly_values_for_year.m # Monthly aggregation
-│   │   └── summarizeERA5.m                # Supporting summarization routines
-│   ├── OLD/                              # Legacy scripts
-│   │   └── download22.py
-│   ├── extractPDSI.m                     # Extract Palmer Drought Severity Index (PDSI)
-│   ├── gatherPDSI2.m                     # Assemble historical PDSI data
-│   ├── gatherPDSI2_future.m              # Assemble future scenario PDSI data
-│   ├── make_terraclimate_obs.m           # Generate observational TerraClimate fields
-│   ├── make_terraclimate_future.m        # Generate future scenario datasets
-│   ├── make_terraclimate_counterfactual.m # Counterfactual climate generation
-│   ├── monthlyPET_co2.m                  # PET calculation including CO₂ effects
-│   ├── runPDSI.m                         # Run PDSI model (historical)
-│   ├── runPDSI_future.m                  # Run PDSI model (future scenarios)
-│   ├── run_pet_obs.m                     # PET for observational data
-│   ├── run_pet_counterfactual_future.m   # PET for counterfactual/future runs
-│   ├── run_vpd_pet_counterfactual_future.m # VPD + PET workflows
-│   ├── run_wb_terra_counterfactual_future.m # Water balance modeling
-│   ├── runsnow.m                         # Snow model routines
-│   └── readme.txt                        # Module-specific notes
-│
-├── DATA_ACCESSIBILITY/                   # Scripts for accessing TerraClimate data
-│   ├── POINT_SUBSETS/                    # Extract time series at point locations
-│   │   ├── *.m / *.py / *.R / *.sh       # MATLAB, Python, R, and shell examples
-│   ├── RECTANGLE_SUBSETS/               # Extract spatial subsets (bounding boxes)
-│   │   ├── *.m / *.py / *.R / *.sh       # Multi-language implementations
-│   └── terraclimate_opendap_python_modified.py # OPeNDAP example (Python)
-│
-├── MAKE_CLIMO/                           # Climatology generation workflows
-│   ├── climo_maps.m                      # Visualization of climatologies
-│   ├── create_climo.m                    # Core climatology computation
-│   ├── runclimo_19812010.m               # 1981–2010 climatology
-│   ├── runclimo_19912020.m               # 1991–2020 climatology
-│   └── readme.txt                        # Notes on climatology generation
-│
-├── MAKE_NETCDFS/                         # Export processed data to NetCDF format
-│   ├── MAKE_NETCDFS_CLIMOS/              # NetCDF generation for climatologies
-│   ├── MAKE_NETCDFS_GEE/                 # Outputs formatted for Google Earth Engine
-│   ├── MAKE_NETCDFS_UIDAHO/              # NetCDF generation for observations (1950–present)
-│   └── MAKE_NETCDFS_UIDAHO_+2C+4C/       # NetCDF for warming scenarios (+2°C, +4°C)
-│
-└── README.md                             # Repository overview and documentation
+.
+├── bin
+│   ├── download_counterfactual_data.sh
+│   ├── download_scalingfactor_data.sh
+│   ├── download_support_data.sh
+│   ├── download_terraclimate_climatology_data.sh
+│   └── download_terraclimate_data.sh
+├── data
+│   ├── final
+│   ├── inputs
+│   │   ├── annual_co2.mat
+│   │   ├── counterfactual_pr.nc
+│   │   ├── counterfactual_srad.nc
+│   │   ├── counterfactual_tdmean.nc
+│   │   ├── counterfactual_tmax.nc
+│   │   ├── counterfactual_tmin.nc
+│   │   ├── counterfactual_vap.nc
+│   │   ├── counterfactual_ws.nc
+│   │   ├── global_smooth2.mat
+│   │   ├── lonlatel.mat
+│   │   ├── NASAGISS.csv
+│   │   ├── scalefactorCMIP6.mat
+│   │   ├── scalefactor_huss.nc
+│   │   ├── scalefactor_pr.nc
+│   │   ├── scalefactor_rsds.nc
+│   │   ├── scalefactor_tasmax.nc
+│   │   ├── scalefactor_tasmin.nc
+│   │   └── scalefactor_was.nc
+│   ├── intermediary
+├── examples
+│   ├── point_subsets
+│   │   ├── terraclimate_extract_point_subsets.m
+│   │   ├── terraclimate_extract_point_subsets.py
+│   │   ├── terraclimate_extract_point_subsets.R
+│   │   ├── terraclimate_extract_point_subsets.sh
+│   │   └── terrraclimate_extract_point_subsets.m
+│   ├── rectangle_subsets
+│   │   ├── terraclimate_extract_rectangle_subsets.py
+│   │   ├── terraclimate_extract_rectangle_subsets.sh
+│   │   ├── terraclimate_extract_rectangle_subsets_v1.R
+│   │   ├── terrraclimate_extract_rectangle_subsets.m
+│   │   └── terrraclimate_extract_rectangle_subsets.py
+│   └── terraclimate_opendap_python_modified.py
+├── modules
+│   ├── era5_downloads
+│   │   ├── PYTHON_SCRIPTS
+│   │   │   ├── pyy_dew_2025.py
+│   │   │   ├── pyy_p_2025.py
+│   │   │   ├── pyy_ssrd_2025.py
+│   │   │   ├── pyy_t_2025.py
+│   │   │   ├── pyy_u_2025.py
+│   │   │   └── pyy_v_2025.py
+│   │   ├── PYTHON_TEMPLATES
+│   │   │   ├── template_dew.sh
+│   │   │   ├── template_p.sh
+│   │   │   ├── template_ssrd.sh
+│   │   │   ├── template_t.sh
+│   │   │   ├── template_u.sh
+│   │   │   └── template_v.sh
+│   │   ├── directions.md
+│   │   ├── step1_generate_python_scripts.sh
+│   │   ├── step2_execute_python_scripts.sh
+│   │   ├── step3_summarize_year_of_ERA5.m
+│   │   ├── step4_compute_monthly_values_for_year.m
+│   │   └── summarizeERA5.m
+│   ├── TRASH
+│   │   └── make_pet_scenario.m
+│   ├── hydro_tax_robase.m
+│   ├── make_pet.m
+│   ├── make_snow.m
+│   ├── make_terraclimate_counterfactual.m
+│   ├── make_terraclimate_future.m
+│   ├── make_terraclimate_obs.m
+│   ├── make_vpd.m
+│   ├── make_wb.m
+│   └── monthlyPET_co2.m
+├── scripts
+│   └── run_terraclimate.m
+├── LICENSE.md
+└── README.md
 ```
 
 ---
@@ -86,30 +127,55 @@ This repository contains the code and supporting resources used to generate the 
 
 ### 1. Additional Data Files for Code Repository
 
-The `1_DOWNLOAD_SUPPORT_DATA` folder contains a bash script `download_support_data.sh` for downloading additional data to support this code. This data can be downloaded into the proper folders using:
+The `bin/` folder contains bash scripts (`download_*.sh`) for downloading the data required to run the TerraClimate workflows.
+
+- `download_support_data.sh` — MATLAB inputs and supporting datasets  
+- `download_scalingfactor_data.sh` — CMIP6-derived scaling factors  
+- `download_counterfactual_data.sh` — counterfactual climate forcing data  
+- `download_terraclimate_data.sh` — TerraClimate observational data for running the scenarios (in lieu of generated .mat files)
+- `download_terraclimate_climatology_data.sh` — climatological baseline data  
+
+Example usage:
 
 ```bash
 chmod +x download_support_data.sh
 ./download_support_data.sh
 ```
 
-The `download_support_data.sh` script downloads the following types of files:
+---
+### 2. TerraClimate Script
 
-* **Coarse-resolution GCM NetCDFs:** e.g., `counterfactual_pr.nc`, `counterfactual_srad.nc`, …
-* **Scale factor NetCDFs** (to `create_terra/INPUTDATA`): e.g., `scalefactor_pr.nc`, `scalefactor_was.nc`, …
-* **MATLAB support files** (to `create_terra/INPUTDATA`): e.g., `annual_co2.mat`, `global_smooth2.mat`, …
+The script `script/run_terraclimate.m` serves as the primary workflow driver. It:
 
+* Loads input datasets (e.g., CO₂, climatology, scaling factors)
+* Executes functions in `modules/` to compute PET, water balance, snow, and drought metrics
+* Produces historical, future, and counterfactual TerraClimate fields
+* Saves outputs as `.mat` files for downstream analysis
 
-### 2. TerraClimate Field Generation
+---
+### 3. TerraClimate Functions
 
-The `2_RUN_TERRACLIMATE/` folder contains the primary computational workflows used to generate TerraClimate fields. These include:
+The `modules/` folder contains the primary functions used to generate TerraClimate fields. These include:
 
+* `make_terraclimate_obs.m` – Generates historical (observational) TerraClimate fields
+* `make_terraclimate_future.m` – Produces future climate projections (CMIP6-based scenarios)
+* `make_terraclimate_counterfactual.m` – Constructs counterfactual climate scenarios
+
+* `make_pet.m` – Computes potential evapotranspiration (PET)
+* `monthlyPET_co2.m` – PET calculation with CO₂ sensitivity
+* `make_vpd.m` – Calculates vapor pressure deficit (VPD)
+
+* `make_wb.m` – Runs the core water balance model
+* `make_snow.m` – Simulates snow accumulation and melt processes
+* `hydro_tax_robase.m` – Hydrologic parameterization and soil water capacity setup
+
+These functions support:
 * Water balance modeling integrating precipitation, temperature, and soil parameters
-* Potential evapotranspiration (PET) calculations incorporating CO₂ effects
+* PET calculations incorporating CO₂ effects
 * Drought metrics, including the Palmer Drought Severity Index (PDSI)
-* Scenario generation, including historical, future (CMIP6-based), and counterfactual simulations
+* Scenario generation (historical, future, and counterfactual)
 
-Intermediate datasets (e.g., CO₂ time series, smoothing parameters, scaling factors) are stored as `.mat` files and used across workflows.
+Input datasets (e.g., CO₂ time series, smoothing parameters, scaling factors) are stored as `.mat` files in the `data/inputs/` directory and used across workflows. Intermediary datasets are stored as `.mat` files in the `data/intermediary/` directory.
 
 ---
 
@@ -128,29 +194,23 @@ The `download_support_data.sh` script downloads the following types of files:
 * **Scale factor NetCDFs** (to `create_terra/INPUTDATA`): e.g., `scalefactor_pr.nc`, `scalefactor_was.nc`, …
 * **MATLAB support files** (to `create_terra/INPUTDATA`): e.g., `annual_co2.mat`, `global_smooth2.mat`, …
 ---
-
 ### 4. Data Accessibility
 
-To facilitate access to the TerraClimate dataset, we provide example code in **R**, **Python**, and **MATLAB**.
+To facilitate access to TerraClimate data, the `examples/` folder provides demonstration scripts in **MATLAB**, **Python**, and **R** for downloading subsets of the dataset.  
 
-Users can download rectangular subsets and point-based data via THREDDS web services using either **OPeNDAP** or **NCSS**, as outlined below:
+Two types of subsets are supported:
 
-* **Using OPeNDAP**
-  * Rectangular subsets
-    * MATLAB
-    * Python
-    * R
-    * R (alternative version)
-  * Point data
-    * MATLAB
-    * Python
-    * R
+* **Point-based subsets** – extract time series for specific locations
+  * Scripts: `terraclimate_extract_point_subsets.*` (MATLAB, Python, R)
+* **Rectangular subsets** – extract gridded data for a defined region
+  * Scripts: `terraclimate_extract_rectangle_subsets.*` (MATLAB, Python, R, with some alternate versions)
 
-* **Using NCSS**
-  * Batch scripts for:
-    * Rectangular subsets
-    * Point data
+These examples demonstrate how to download data via:
 
+* **OPeNDAP** – programmatic access to individual points or regions
+* **NCSS** – batch downloads for points or rectangular subsets
+
+Users can adapt these scripts to retrieve historical, future, or counterfactual TerraClimate fields efficiently.
 
 ## Notes
 

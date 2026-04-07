@@ -41,7 +41,7 @@ function [month_tmax, month_tmin, month_rsds, month_was, month_tp, month_dew] = 
 	end
 
 	% Save monthly data to mat file
-	mnew = matfile(monthly_era5summary.mat,'Writable',true);
+	mnew = matfile('monthly_era5summary.mat','Writable',true);
 	mnew.
 
 end
