@@ -2,6 +2,7 @@
 delta_temp=4;
 var=1;
 targetyear=2015;
+
 % load scalefactors from netCDF
 switch var
 case 1, Y=ncread('scalefactor_tasmax.nc','lat');X=ncread('scalefactor_tasmax.nc','lon');scalefactor=ncread('scalefactor_tasmax.nc','ps_mean');scalefactors=ncread('scalefactor_tasmax.nc','ps_std');
@@ -47,7 +48,8 @@ data=data+refdata;
 for j=1:12
    data(:,:,j)=data(:,:,j)+d2*interp2(x,y,scalefactor(:,:,j),lon,lat);
 end
-elseif var==6
+elseif var==5; %corrected to be 5 was 6 by KCH on 2026/4/6
+
 % minimum bounds for ref data to 0.1 to avoid dividing by zero
 refdata(refdata<.1)=.1;
 data=data./refdata;
@@ -61,7 +63,7 @@ for j=1:12
 end
 % cast any data that goes below 0 to 0
 data(data<0)=0;
-elseif var==5
+elseif var==6; %corrected to be 6 was 5 by KCH on 2026/4/6
 % covert from vapor pressure to dewpoint temperature
 data=data*10;refdata=refdata*10;
 % set minimum bounds

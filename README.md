@@ -127,19 +127,6 @@ The `download_support_data.sh` script downloads the following types of files:
 * **Coarse-resolution GCM NetCDFs:** e.g., `counterfactual_pr.nc`, `counterfactual_srad.nc`, …
 * **Scale factor NetCDFs** (to `create_terra/INPUTDATA`): e.g., `scalefactor_pr.nc`, `scalefactor_was.nc`, …
 * **MATLAB support files** (to `create_terra/INPUTDATA`): e.g., `annual_co2.mat`, `global_smooth2.mat`, …
-
----
-
-### 3. NetCDF Formatting and Distribution
-
-The `MAKE_NETCDFS/` module prepares final outputs for dissemination. Separate submodules support:
-
-* THREDDS-compatible outputs for data access services
-* Google Earth Engine ingestion formats
-* University of Idaho distributions, including:
-  * Observational datasets (1950–present)
-  * Scenario datasets (+2 °C, +4 °C, and counterfactual conditions, 1950–present)
-
 ---
 
 ### 4. Data Accessibility

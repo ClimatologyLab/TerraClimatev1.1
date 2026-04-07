@@ -1,6 +1,6 @@
 % historical TerraClimate data need to be acquired from
 % http://thredds.northwestknowledge.net:8080/thredds/catalog/TERRACLIMATE_ALL/data/catalog.html
-% GCM counterfactuals available at XYZ
+% GCM counterfactuals available at https://climate.northwestknowledge.net/ACSL/TERRACLIMATE/CODE_SUPPORT/
 
 var=1;
 targetyear=2015;
