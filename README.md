@@ -12,11 +12,22 @@ This repository contains the code and supporting resources used to generate the 
 1. **Input data retrieval (`bin/*.sh`)**
    Input data files (MAT and NetCDF formats) for the directory data/inputs can be downloaded with the bash scripts located in /bin. These files are needed to support the run of the main script for generating TerraClimate files. 
 
-2. **Code for raw data retrieval (`bin/*.sh`)**
+2. **Code for raw data retrieval (`modules/era5_downloads/*.sh`)**
    Code for retrieving the raw data files from ERA5 is supplied in the modules/era5_downloads directory. This python code connects to the Climate Data Store fore retrieval of 6-hourly ERA5 data. This data is used to fill in the monthly ERA5 (1950-Current year) MATLAB file data/inputs/monthly_era5summary.mat needed for the TerraClimate runs. 
 
 
-2. **Core data generation (`scripts/run_terraclimate.m`)**
+3. **Input data needed (`data/inputs`)**  
+   The `data/inputs/` directory contains the essential datasets used by the TerraClimate workflows, including:
+
+   - CO₂ time series (`annual_co2.mat`) for PET and drought calculations.  
+   - Counterfactual climate variables (`counterfactual_*.nc`) for precipitation, temperature, vapor pressure, radiation, and wind.  
+   - CMIP6 scaling factors (`scalefactorCMIP6.mat` and `scalefactor_*.nc`) for bias-correcting future scenarios.  
+   - Spatial and soil data (`global_smooth2.mat`, `lonlatel.mat`, `worldclimsoil2.mat`) for interpolation and hydrologic modeling.  
+   - Reference data (`NASAGISS.csv`) for validation and comparison.  
+
+   These inputs provide the base climate, soil, and scaling information needed to generate historical, future, and counterfactual TerraClimate fields in `data/final/`.
+
+4. **Core data generation (`scripts/run_terraclimate.m`)**
    A script to construct TerraClimate fields, including water balance modeling, potential evapotranspiration (PET), and Palmer Drought Severity Index (PDSI) calculations for both historical and scenarios (+2C, +4C, counterfactual). 
 
 
