@@ -1,10 +1,10 @@
 %% run_future_example.m
-% Example script to generate observation and scenario TerraClimate
+% Example script to generate observation and scenario(+2C, +4C, counterfactual) TerraClimate data
 % Date: 2026-04-06
 %================================================================
 
 %% Add modules folder to MATLAB path
-addpath('../modules');  	% Assumes running this from the scripts/ folder
+addpath('../modules');  	% Assumes running this script from the scripts/ folder
 
 %% Paths to data storage
 path_to_final_data = 'data/final/';
@@ -43,7 +43,7 @@ for year = target_years;
     %% -----------------------------
     % Run model for PET
     %% -----------------------------
-    make_pet_obs(path_to_input_data, path_to_final_data, year)
+    make_pet(path_to_input_data, path_to_final_data, year, mode)
 end
 %% -----------------------------
 % Run model for Water Balance metrics (SM, SWE,Q )
