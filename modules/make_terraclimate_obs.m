@@ -49,6 +49,17 @@ dirr = '/data/obs/obs/gridded/terraclim/MAT/';
 
 %mbase = 
 
+
+%one of these is probably the ERA5 land monthly data.. likely myyr
+/data/obs/reanalysis/ecmwf/era5/SFC/monthly_era5summary.mat
+
+then we need the climo for era5, mclimo
+
+baseline might be the terraclimate baseline .. so some climo from last time??
+
+
+
+
 %------------------------------------------
 % Get  lon, lat - Longitude and latitude grids for TerraClimate grid
 %------------------------------------------
