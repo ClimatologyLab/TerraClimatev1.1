@@ -115,7 +115,6 @@ This repository contains the code and supporting resources used to generate the 
 │   │   ├── step2_execute_python_scripts.sh
 │   │   ├── step3_summarize_year_of_ERA5.m
 │   │   ├── step4_compute_monthly_values_for_year.m
-│   │   └── summarizeERA5.m
 │   ├── hydro_tax_robase.m
 │   ├── make_pet.m
 │   ├── make_snow.m
@@ -134,7 +133,7 @@ This repository contains the code and supporting resources used to generate the 
 ---
 ## Processing Details
 
-### 1. Additional Data Files for Code Repository
+### 1. Downloading Additional Data Files for Code Repository
 
 The `bin/` folder contains bash scripts (`download_*.sh`) for downloading the data required to run the TerraClimate workflows.
 
@@ -151,30 +150,39 @@ chmod +x download_support_data.sh
 ./download_support_data.sh
 ```
 
-Input Data Files
+### Input Data Files
 
-The inputs/ folder contains datasets used across the TerraClimate workflows:
+The `inputs/` folder contains datasets used across the TerraClimate workflows:
 
-annual_co2.mat — Annual global CO₂ concentration time series for PET and drought modeling
-counterfactual_*.nc — Counterfactual climate forcing data for various variables:
-counterfactual_pr.nc — precipitation
-counterfactual_srad.nc — incoming solar radiation
-counterfactual_tdmean.nc — mean dew point temperature
-counterfactual_tmax.nc — maximum temperature
-counterfactual_tmin.nc — minimum temperature
-counterfactual_vap.nc — vapor pressure
-counterfactual_ws.nc — wind speed
-global_smooth2.mat — Spatial smoothing coefficients for climate variables (used in bias correction or interpolation)
-lonlatel.mat — Longitude and latitude grid information for all TerraClimate points
-NASAGISS.csv — NASA GISS reference climate data (used for validation or comparison)
-scalefactorCMIP6.mat - Consolidated CMIP6 scaling factors for multiple climate variables (precipitation, temperature, radiation, wind, humidity) stored in a single MATLAB file for convenience
-scalefactor_pr.nc — precipitation scaling factors
-scalefactor_tasmax.nc — maximum temperature scaling factors
-scalefactor_tasmin.nc — minimum temperature scaling factors
-scalefactor_rsds.nc — surface radiation scaling factors
-scalefactor_was.nc — wind speed scaling factors
-scalefactor_huss.nc — specific humidity scaling factors
-worldclimsoil2.mat — Representative soil properties used for hydrologic modeling (e.g., field capacity, wilting point), derived from WorldClim and FAO data. https://hess.copernicus.org/articles/20/1459/2016/hess-20-1459-2016.pdf
+- **annual_co2.mat** — Annual global CO₂ concentration time series for PET and drought modeling  
+
+- **counterfactual_*.nc** — Counterfactual climate forcing data for various variables:
+  - `counterfactual_pr.nc` — precipitation  
+  - `counterfactual_srad.nc` — incoming solar radiation  
+  - `counterfactual_tdmean.nc` — mean dew point temperature  
+  - `counterfactual_tmax.nc` — maximum temperature  
+  - `counterfactual_tmin.nc` — minimum temperature  
+  - `counterfactual_vap.nc` — vapor pressure  
+  - `counterfactual_ws.nc` — wind speed  
+
+- **global_smooth2.mat** — Spatial smoothing coefficients for climate variables (used in bias correction or interpolation)  
+
+- **lonlatel.mat** — Longitude and latitude grid information for all TerraClimate points  
+
+- **NASAGISS.csv** — NASA GISS reference climate data (used for validation or comparison)  
+
+- **scalefactorCMIP6.mat** — Consolidated CMIP6 scaling factors for multiple climate variables (precipitation, temperature, radiation, wind, humidity) stored in a single MATLAB file for convenience  
+
+- **scalefactor_*.nc** — CMIP6 scaling factors by variable:
+  - `scalefactor_pr.nc` — precipitation scaling factors  
+  - `scalefactor_tasmax.nc` — maximum temperature scaling factors  
+  - `scalefactor_tasmin.nc` — minimum temperature scaling factors  
+  - `scalefactor_rsds.nc` — surface radiation scaling factors  
+  - `scalefactor_was.nc` — wind speed scaling factors  
+  - `scalefactor_huss.nc` — specific humidity scaling factors  
+
+- **worldclimsoil2.mat** — Representative soil properties used for hydrologic modeling (e.g., field capacity, wilting point), derived from WorldClim and FAO data  
+  - https://hess.copernicus.org/articles/20/1459/2016/hess-20-1459-2016.pdf  
 
 These files provide the essential input data required to generate historical, future, and counterfactual TerraClimate fields, and are used by scripts in modules/ and examples/.
 
