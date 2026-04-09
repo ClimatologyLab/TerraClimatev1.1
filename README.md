@@ -225,7 +225,7 @@ Variables:
 
 - **lonlatel.mat** — Longitude and latitude grid information for all TerraClimate points  
 
-- **worldclimsoil2.mat** — Representative soil properties used for hydrologic modeling (e.g., field capacity, wilting point), derived from WorldClim and FAO data
+- **worldclimsoil2.mat** — Representative soil properties used for hydrologic modeling (e.g., field capacity, wilting point), derived from WorldClim and FAO data. This file is not provided here. 
   - https://hess.copernicus.org/articles/20/1459/2016/hess-20-1459-2016.pdf
 
 - **annual_co2.mat** — Annual global CO₂ concentration time series for PET and drought modeling  
