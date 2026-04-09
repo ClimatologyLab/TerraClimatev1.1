@@ -4,7 +4,7 @@
 
 This repository contains the code and supporting resources used to generate the TerraClimate v1.1 dataset, including observational fields and future scenario (+2C,+4C, counterfactual) products. The workflow is organized into primary stages: (1) download supporting files, and (2) running a MATLAB script to generate the TerraClimate files for specific variables and years. Additionally in this repository are scripts to aid in extracting subsets from the data hosted at the University of Idaho.
 
-Note: the code in this repository has not been tested. It was put together from the original MATLAB code that was used to create TerraClimate with the addition of code comments with the help of chatGPT in order to communicate better how TerraClimate was run. There may be errors. 
+Note: the code in this repository has not been tested. It was put together from the original MATLAB code that was used to create TerraClimate with the addition of code comments with the help of chatGPT in order to communicate better how TerraClimate was run. There may be errors in what is provided here. 
 
 ---
 
