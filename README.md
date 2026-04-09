@@ -185,6 +185,7 @@ Variables:
     tp     : [4-D single] 1440 x 721 x 12 x 76
     was    : [4-D single] 1440 x 721 x 12 x 76
     years  : [1x76 double] 1950–2025
+```
 
 - **climo_19712000_era5summary.mat** — ERA5 climatologies for 1971–2000 used to compute anomalies relative to 1950–Current Year (2025). This file is not provided here, but can be generated from ERA5 data. The structure of this file is:
 
@@ -203,6 +204,7 @@ Variables:
     tminc  : [3-D single] 1440 x 721 x 12
     tpc    : [3-D single] 1440 x 721 x 12
     wasc   : [3-D single] 1440 x 721 x 12
+```
 
 - **WorldClim v2.0 climatology (.mat)** — Climatologies for 1970–2000. This file is not provided here but can be downloaded.  
   The structure for a variable (`{variable_name}` = tmax, tmin, wind, pr, tdew, srad) is:
@@ -219,6 +221,7 @@ Variables:
     {variable_name}: [3-D single]
     x   : [1x43200 double]
     y   : [1x21600 double]
+```
 
 - **lonlatel.mat** — Longitude and latitude grid information for all TerraClimate points  
 
