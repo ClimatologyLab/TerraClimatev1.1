@@ -164,57 +164,61 @@ chmod +x download_support_data.sh
 
 The `inputs/` folder contains datasets used across the TerraClimate workflows.
 
+
 - **monthly_era5summary.mat** — ERA5 monthly data from 1950–Current Year (2025). This file is not provided here, but ERA5 can be downloaded. The structure of this file is:
 
-    matlab.io.MatFile
+```text
+matlab.io.MatFile
 
-    Properties:
-        Properties.Source: 'monthly_era5summary.mat'
-        Properties.Writable: false
-        Properties.ProtectedLoading: false
+Properties:
+    Properties.Source: 'monthly_era5summary.mat'
+    Properties.Writable: false
+    Properties.ProtectedLoading: false
 
-    Variables:
-        dew    : [4-D single] 1440 x 721 x 12 x 76
-        lat    : [721x1 single]
-        lon    : [1440x1 single]
-        rsds   : [4-D single] 1440 x 721 x 12 x 76
-        tmax   : [4-D single] 1440 x 721 x 12 x 76
-        tmin   : [4-D single] 1440 x 721 x 12 x 76
-        tp     : [4-D single] 1440 x 721 x 12 x 76
-        was    : [4-D single] 1440 x 721 x 12 x 76
-        years  : [1x76 double] 1950–2025
+Variables:
+    dew    : [4-D single] 1440 x 721 x 12 x 76
+    lat    : [721x1 single]
+    lon    : [1440x1 single]
+    rsds   : [4-D single] 1440 x 721 x 12 x 76
+    tmax   : [4-D single] 1440 x 721 x 12 x 76
+    tmin   : [4-D single] 1440 x 721 x 12 x 76
+    tp     : [4-D single] 1440 x 721 x 12 x 76
+    was    : [4-D single] 1440 x 721 x 12 x 76
+    years  : [1x76 double] 1950–2025
 
 - **climo_19712000_era5summary.mat** — ERA5 climatologies for 1971–2000 used to compute anomalies relative to 1950–Current Year (2025). This file is not provided here, but can be generated from ERA5 data. The structure of this file is:
 
-    matlab.io.MatFile
+```text
+matlab.io.MatFile
 
-    Properties:
-        Properties.Source: 'climo_19712000_era5summary.mat'
-        Properties.Writable: false
-        Properties.ProtectedLoading: false
+Properties:
+    Properties.Source: 'climo_19712000_era5summary.mat'
+    Properties.Writable: false
+    Properties.ProtectedLoading: false
 
-    Variables:
-        dewc   : [3-D single] 1440 x 721 x 12
-        rsdsc  : [3-D single] 1440 x 721 x 12
-        tmaxc  : [3-D single] 1440 x 721 x 12
-        tminc  : [3-D single] 1440 x 721 x 12
-        tpc    : [3-D single] 1440 x 721 x 12
-        wasc   : [3-D single] 1440 x 721 x 12
+Variables:
+    dewc   : [3-D single] 1440 x 721 x 12
+    rsdsc  : [3-D single] 1440 x 721 x 12
+    tmaxc  : [3-D single] 1440 x 721 x 12
+    tminc  : [3-D single] 1440 x 721 x 12
+    tpc    : [3-D single] 1440 x 721 x 12
+    wasc   : [3-D single] 1440 x 721 x 12
 
 - **WorldClim v2.0 climatology (.mat)** — Climatologies for 1970–2000. This file is not provided here but can be downloaded.  
   The structure for a variable (`{variable_name}` = tmax, tmin, wind, pr, tdew, srad) is:
 
-    matlab.io.MatFile
+```text
+matlab.io.MatFile
 
-    Properties:
-        Properties.Source: 'worldclim_{variable_name}_global.mat'
-        Properties.Writable: false
-        Properties.ProtectedLoading: false
+Properties:
+    Properties.Source: 'worldclim_{variable_name}_global.mat'
+    Properties.Writable: false
+    Properties.ProtectedLoading: false
 
-    Variables:
-        {variable_name}: [3-D single]
-        x   : [1x43200 double]
-        y   : [1x21600 double]
+Variables:
+    {variable_name}: [3-D single]
+    x   : [1x43200 double]
+    y   : [1x21600 double]
 
 - **lonlatel.mat** — Longitude and latitude grid information for all TerraClimate points  
 
