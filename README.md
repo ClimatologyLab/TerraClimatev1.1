@@ -4,6 +4,8 @@
 
 This repository contains the code and supporting resources used to generate the TerraClimate v1.1 dataset, including observational fields and future scenario (+2C,+4C, counterfactual) products. The workflow is organized into primary stages: (1) download supporting files, and (2) running a MATLAB script to generate the TerraClimate files for specific variables and years. Additionally in this repository are scripts to aid in extracting subsets from the data hosted at the University of Idaho.
 
+Note: the code in this repository has not been tested. It was put together from the original MATLAB code that was used to create TerraClimate with the addition of code comments with the help of chatGPT in order to communicate better how TerraClimate was run. There may be errors. 
+
 ---
 
 ## Overview of Repository Directories
@@ -61,6 +63,7 @@ This repository contains the code and supporting resources used to generate the 
 │   ├── final
 │   ├── inputs
 │   │   ├── annual_co2.mat
+│   │   ├── climo_19712000_era5summary.mat
 │   │   ├── counterfactual_pr.nc
 │   │   ├── counterfactual_srad.nc
 │   │   ├── counterfactual_tdmean.nc
@@ -70,6 +73,7 @@ This repository contains the code and supporting resources used to generate the 
 │   │   ├── counterfactual_ws.nc
 │   │   ├── global_smooth2.mat
 │   │   ├── lonlatel.mat
+│   │   ├── monthly_era5summary.mat
 │   │   ├── NASAGISS.csv
 │   │   ├── scalefactorCMIP6.mat
 │   │   ├── scalefactor_huss.nc
@@ -79,6 +83,12 @@ This repository contains the code and supporting resources used to generate the 
 │   │   ├── scalefactor_tasmin.nc
 │   │   └── scalefactor_was.nc
 │   │   └──  worldclimsoil2.mat
+│   │   └──  worldclim_pr_global.mat
+│   │   └──  worldclim_srad_global.mat
+│   │   └──  worldclim_tdew_global.mat
+│   │   └──  worldclim_tmax_global.mat
+│   │   └──  worldclim_tmin_global.mat
+│   │   └──  worldclim_wind_global.mat
 │   ├── intermediary
 ├── examples
 │   ├── point_subsets
@@ -152,7 +162,64 @@ chmod +x download_support_data.sh
 
 ### Input Data Files
 
-The `inputs/` folder contains datasets used across the TerraClimate workflows:
+The `inputs/` folder contains datasets used across the TerraClimate workflows.
+
+- **monthly_era5summary.mat** — ERA5 monthly data from 1950–Current Year (2025). This file is not provided here, but ERA5 can be downloaded. The structure of this file is:
+
+    matlab.io.MatFile
+
+    Properties:
+        Properties.Source: 'monthly_era5summary.mat'
+        Properties.Writable: false
+        Properties.ProtectedLoading: false
+
+    Variables:
+        dew    : [4-D single] 1440 x 721 x 12 x 76
+        lat    : [721x1 single]
+        lon    : [1440x1 single]
+        rsds   : [4-D single] 1440 x 721 x 12 x 76
+        tmax   : [4-D single] 1440 x 721 x 12 x 76
+        tmin   : [4-D single] 1440 x 721 x 12 x 76
+        tp     : [4-D single] 1440 x 721 x 12 x 76
+        was    : [4-D single] 1440 x 721 x 12 x 76
+        years  : [1x76 double] 1950–2025
+
+- **climo_19712000_era5summary.mat** — ERA5 climatologies for 1971–2000 used to compute anomalies relative to 1950–Current Year (2025). This file is not provided here, but can be generated from ERA5 data. The structure of this file is:
+
+    matlab.io.MatFile
+
+    Properties:
+        Properties.Source: 'climo_19712000_era5summary.mat'
+        Properties.Writable: false
+        Properties.ProtectedLoading: false
+
+    Variables:
+        dewc   : [3-D single] 1440 x 721 x 12
+        rsdsc  : [3-D single] 1440 x 721 x 12
+        tmaxc  : [3-D single] 1440 x 721 x 12
+        tminc  : [3-D single] 1440 x 721 x 12
+        tpc    : [3-D single] 1440 x 721 x 12
+        wasc   : [3-D single] 1440 x 721 x 12
+
+- **WorldClim v2.0 climatology (.mat)** — Climatologies for 1970–2000. This file is not provided here but can be downloaded.  
+  The structure for a variable (`{variable_name}` = tmax, tmin, wind, pr, tdew, srad) is:
+
+    matlab.io.MatFile
+
+    Properties:
+        Properties.Source: 'worldclim_{variable_name}_global.mat'
+        Properties.Writable: false
+        Properties.ProtectedLoading: false
+
+    Variables:
+        {variable_name}: [3-D single]
+        x   : [1x43200 double]
+        y   : [1x21600 double]
+
+- **lonlatel.mat** — Longitude and latitude grid information for all TerraClimate points  
+
+- **worldclimsoil2.mat** — Representative soil properties used for hydrologic modeling (e.g., field capacity, wilting point), derived from WorldClim and FAO data
+  - https://hess.copernicus.org/articles/20/1459/2016/hess-20-1459-2016.pdf
 
 - **annual_co2.mat** — Annual global CO₂ concentration time series for PET and drought modeling  
 
@@ -167,8 +234,6 @@ The `inputs/` folder contains datasets used across the TerraClimate workflows:
 
 - **global_smooth2.mat** — Spatial smoothing coefficients for climate variables (used in bias correction or interpolation)  
 
-- **lonlatel.mat** — Longitude and latitude grid information for all TerraClimate points  
-
 - **NASAGISS.csv** — NASA GISS reference climate data (used for validation or comparison)  
 
 - **scalefactorCMIP6.mat** — Consolidated CMIP6 scaling factors for multiple climate variables (precipitation, temperature, radiation, wind, humidity) stored in a single MATLAB file for convenience  
@@ -180,9 +245,6 @@ The `inputs/` folder contains datasets used across the TerraClimate workflows:
   - `scalefactor_rsds.nc` — surface radiation scaling factors  
   - `scalefactor_was.nc` — wind speed scaling factors  
   - `scalefactor_huss.nc` — specific humidity scaling factors  
-
-- **worldclimsoil2.mat** — Representative soil properties used for hydrologic modeling (e.g., field capacity, wilting point), derived from WorldClim and FAO data  
-  - https://hess.copernicus.org/articles/20/1459/2016/hess-20-1459-2016.pdf  
 
 These files provide the essential input data required to generate historical, future, and counterfactual TerraClimate fields, and are used by scripts in modules/ and examples/.
 

@@ -118,7 +118,7 @@ data = ncread(data_nc_file,varname);
 % Read TerraClimate climatology file (1991 - 2020)
 ref_file_template  = [path_to_final_data,'TerraClimate_19912020_%s.nc'];
 ref_nc_file = sprintf(ref_file_template, varname);
-refdata = ncread(ref_nc_file,varname);
+refdata = ncread(ref_nc_file,varname); 
 
 % Read latitude and longitude from the corresponding data file
 lat = ncread(data_nc_file, 'lat');
@@ -216,7 +216,6 @@ end
 %% ----------------------------------
 % Save output  - this is a new addition
 %% ----------------------------------
-%DEADBEEF - not sure that the dimension of data is right for these .mat files ...also do we round(data,1)? 
-save([path_to_final_data, varname,'_', num2str(delta), 'C_', num2str(yr)], '-v7.3', ['data']);
+save([path_to_final_data, varname,'_', num2str(delta), 'C_', num2str(yr)], '-v7.3', ['data']); % lon x lat x 12
 
 end

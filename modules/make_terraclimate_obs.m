@@ -34,43 +34,47 @@ function data = make_terraclimate_obs(path_to_input_data,path_to_final_data, var
 %
 % Date: 2026-04-06
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%------------------------------------------
-% Load Monthly observed TerraClimate data for the year (3-D: lon x lat x month)
-%------------------------------------------
-dirr = '/data/obs/obs/gridded/terraclim/MAT/';
-%   myr   - Monthly observed TerraClimate data for the year (3-D: lon x lat x month)
-%myr = 
-
-%   mclimo - Monthly climatology (3-D: lon x lat x month)
-
-%   mbase  - Monthly base field for interpolation (3-D: lon x lat x month)
-%mclimo = 
-
-%mbase = 
-
-
-%one of these is probably the ERA5 land monthly data.. likely myyr
-/data/obs/reanalysis/ecmwf/era5/SFC/monthly_era5summary.mat
-
-then we need the climo for era5, mclimo
-
-baseline might be the terraclimate baseline .. so some climo from last time??
-
-
-
-
 %------------------------------------------
 % Get  lon, lat - Longitude and latitude grids for TerraClimate grid
 %------------------------------------------
 load([path_to_input_data,'lonlatel.mat']); %lat,lon
 
 %------------------------------------------
+% Load Monthly observed ERA5 data for the year (3-D: lon x lat x month)
+%------------------------------------------
+era5_matfile = matfile([path_to_input_data,'monthly_era5summary.mat']);
+era5_VARNAMES = {'tmax';'tmin';'was';'rsds';'tp';'dew'};
+era5_varname = char(era5_VARNAMES{var});
+myyr = era5_matfile.(era5_varname)(:,:,:,year-1949); %1440 x 721 x 12 x 76
+
+%------------------------------------------
+% Load Monthly ERA5 climatology data for  1970 - 2000 (3-D: lon x lat x month)
+%------------------------------------------
+era5_climo_matfile = matfile([path_to_input_data,'climo_19712000_era5summary.mat']);
+mclimo = era5_climo_matfile.(era5_varname); % 1440 x 721 x 12
+
+%------------------------------------------
+% Load Monthly WorldClim v2.0 climatology data for  1970 - 2000 (3-D: lon x lat x month)
+%------------------------------------------
+worldclim_VARNAMES = {'tmax';'tmin';'wind';'srad';'pr';'tdew';};
+worldclim_varname = char(worldclim_VARNAMES{});
+worldclim_climo_matfile = matfile([path_to_input_data,'worldclim_pr_global.mat']):
+mbase_xygrid = worldclim_climo_matfile.(worldclim_varname); % 21600       43200          12   (x,y,months)
+
+% Extract x,y grid of files
+x = mbase_xygrid.x;
+y = mbase_xygrid.y;
+
+% Change WorldClim climatology from x,y grid to lon,lat grid
+for month=1:12
+ mbase(:,:,month)=interp2(lon,lat,mbase_xygrid(:,:,month),x,y);
+end
+
+%------------------------------------------
 % Get  mlon, mlat - Longitude and latitude grids for input climatology
 %------------------------------------------
 x=ncread([path_to_input_data,'scalefactor_tasmax.nc'],'lon');
 y=ncread([path_to_input_data,'scalefactor_tasmax.nc'],'lat');
-[mlon,mlat]=meshgrid(x,y);
 [mlon,mlat]=meshgrid(x,y);
 
 %------------------------------------------
@@ -95,7 +99,7 @@ anom(:,721:1440,:) = k;
 anom(:,1441,:) = anom(:,1,:);
 
 %------------------------------------------
-% Apply anomalies to TerraClimate baseline
+% Apply anomalies to WorldClim v2.0 baseline
 %------------------------------------------
 if var <= 4
     % Additive variables: temperature, wind, solar
@@ -158,10 +162,8 @@ elseif var == 6
 end
 
 %% ----------------------------------
-% Save output  - this is a new addition
+% Save output
 %% ----------------------------------
-%DEADBEEF - not sure that the dimension of data is right for these .mat files ...also do we round(data,1)?
-save([path_to_final_data, varname,'_', num2str(yr)], '-v7.3', [varname,'data']);
-
+save([path_to_final_data, varname,'_', num2str(yr)], '-v7.3', [varname,'data']); % lon x lat x 12
 
 end
