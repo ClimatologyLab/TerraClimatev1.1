@@ -56,7 +56,6 @@ Note: the code in this repository has not been tested. It was put together from 
 ├── bin
 │   ├── download_counterfactual_data.sh
 │   ├── download_scalingfactor_data.sh
-│   ├── download_support_data.sh
 │   ├── download_terraclimate_climatology_data.sh
 │   └── download_terraclimate_data.sh
 ├── data
@@ -147,7 +146,6 @@ Note: the code in this repository has not been tested. It was put together from 
 
 The `bin/` folder contains bash scripts (`download_*.sh`) for downloading the data required to run the TerraClimate workflows.
 
-- `download_support_data.sh` — MATLAB inputs and supporting datasets  
 - `download_scalingfactor_data.sh` — CMIP6-derived scaling factors  
 - `download_counterfactual_data.sh` — counterfactual climate forcing data  
 - `download_terraclimate_data.sh` — TerraClimate observational data for running the scenarios (in lieu of generated .mat files)
@@ -162,7 +160,7 @@ chmod +x download_support_data.sh
 
 ### Input Data Files
 
-The `inputs/` folder contains datasets used across the TerraClimate workflows.
+The `inputs/` folder contains datasets used across the TerraClimate workflows. However, we do not supply the MATLAB .mat files here. 
 
 
 - **monthly_era5summary.mat** — ERA5 monthly data from 1950–Current Year (2025). This file is not provided here, but ERA5 can be downloaded. The structure of this file is:
