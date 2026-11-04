@@ -23,11 +23,11 @@ m=matfile([dir,'ppt_2C_',num2str(1949+yr)]);
 ppt(:,:,:,yr+127)=m.pptdata(1+(i-1)*240:i*240,:,:)+1;
 end
 
-dir='/data/obs/obs/gridded/terraclim/MAT/4C/';
+dir='/data/obs/obs/gridded/terraclim/MAT/3C/';
 for yr=1:76
-m=matfile([dir,'pet_4C_',num2str(1949+yr)]);
+m=matfile([dir,'pet_3C_',num2str(1949+yr)]);
 pet(:,:,:,yr+203)=m.petdata(1+(i-1)*240:i*240,:,:);
-m=matfile([dir,'ppt_4C_',num2str(1949+yr)]);
+m=matfile([dir,'ppt_3C_',num2str(1949+yr)]);
 ppt(:,:,:,yr+203)=m.pptdata(1+(i-1)*240:i*240,:,:)+1;
 end
 
