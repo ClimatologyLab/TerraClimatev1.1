@@ -51,7 +51,7 @@ end
  [aaet,ddef,rro,snoww,soill,rros,sr1,sr2]=hydro_tax_robase(tmean(:,last4)',pptdata(:,last4)',petdata(:,last4)',soilt(f(last4))',soillast(f(last4))',snowlast(f(last4))',SSRAIN(f(last4))',SSSNOW(f(last4))');
  
  clear petdata tmean pptdata
- aetdata=single(NaN*ones(12,4320,8640));defdata=aetdata;runoffdata=aetdata;snowdata=aetdata;soildata=aetdata;runoffsnowdata=aetdata;SSRAIN=single(NaN*ones(4320,8640));SSSNOW=SSRAIN;
+ aetdata=single(NaN*ones(12,5220,10800));defdata=aetdata;runoffdata=aetdata;snowdata=aetdata;soildata=aetdata;runoffsnowdata=aetdata;SSRAIN=single(NaN*ones(4320,8640));SSSNOW=SSRAIN;
  for i=1:12
    aetdata(:,f(1+chunk*(i-1):chunk*i))=AET(i).data';
    defdata(:,f(1+chunk*(i-1):chunk*i))=DEF(i).data';
