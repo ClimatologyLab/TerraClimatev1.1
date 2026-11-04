@@ -1,5 +1,5 @@
 %delta=2; deltaco2=500-300;
-delta=4; deltaco2=800-300;
+delta=3; deltaco2=650-300;
 for year=1950:2025
 load(['terra_',num2str(delta),'_vap_',num2str(year)]);vapdata=data;
 load(['terra_',num2str(delta),'_tmax_',num2str(year)]);tmaxdata=data;
