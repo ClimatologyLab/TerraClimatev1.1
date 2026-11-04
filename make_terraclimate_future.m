@@ -1,5 +1,5 @@
 % set global warming level
-delta_temp=4;
+delta_temp=2;
 var=1;
 targetyear=2015;
 
