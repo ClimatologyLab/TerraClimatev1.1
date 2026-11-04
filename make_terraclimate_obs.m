@@ -1,5 +1,4 @@
-% need monthly summarized ERA5 data and WorldClim v2.0 climatologies for 1970-2000
-% these are not provided here, but WorlClim v2.0 is widely available and ERA5 summaries can be calculated
+% need monthly summarized ERA5 data and aggregated CHELSA climatologies (bias corrected vapor pressure with CRU TS) for 1981-2010
 
 calcterraclimate(myr,year,mclimo,mbase,lon,lat,mlon,mlat,var);
 
