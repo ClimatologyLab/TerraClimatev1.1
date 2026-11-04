@@ -3,7 +3,7 @@ parpool(16);
 year1=52;
 year2=76+51;
 for yr=year1:year2
-PDSI=single(NaN*ones(12,4320,8640));
+PDSI=single(NaN*ones(12,5220,10800));
 parfor i=1:18
 P(i).data=extractPDSI(i,yr);
 end
