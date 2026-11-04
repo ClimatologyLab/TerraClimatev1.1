@@ -20,7 +20,7 @@ f=find(tmaxdata<tmindata);tmaxdata(f)=tmindata(f);
  sraddata=shiftdim(sraddata,2);
 ft=find(isnan(sraddata));sraddata(ft)=0;
 ft=find(isinf(sraddata));sraddata(ft)=0;
- petdata=NaN*ones(12,4320,8640);
+ petdata=NaN*ones(12,5220,10800);
  f=find(~isnan(tmaxdata(1,:))==1);
  %vpddata=vpddata(:,f);
  %tmaxdata=tmaxdata(:,f);
